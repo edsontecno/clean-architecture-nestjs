@@ -1,4 +1,4 @@
-import { OrderEntity } from '../../order/output/Order.entity';
+import { OrderEntity } from '../../order/gateway/Order.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'clientes' })

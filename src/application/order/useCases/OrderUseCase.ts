@@ -1,19 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import { Order } from '../domain/Order';
+import { Order } from '../entities/Order';
 import { BusinessRuleException } from 'src/system/filtros/business-rule-exception';
 import { timeInMinutes } from 'src/application/utils/utils';
-import { OrderProcess } from '../domain/OrderProcess';
-import { OrderStatus } from '../domain/OrderStatus';
-import { OrderPersistPort } from '../../ports/output/OrderPersistPort';
-import { OrderServicePort } from '../../ports/input/OrderServicePort';
-import { OrderItem } from '../domain/OrderItems';
+import { OrderProcess } from '../entities/OrderProcess';
+import { OrderStatus } from '../entities/OrderStatus';
+import { IOrderData } from '../interfaces/IOrderData';
+import { IOrderUseCase } from '../interfaces/IOrderUseCase';
+import { OrderItem } from '../entities/OrderItems';
 import { IProductData } from 'src/application/product/interfaces/IProductData';
 import { ICustomerUseCase } from 'src/application/custumer/interfaces/ICustomerUseCase';
 
 @Injectable()
-export class OrderService implements OrderServicePort {
+export class OrderUseCase implements IOrderUseCase {
   constructor(
-    private persist: OrderPersistPort,
+    private persist: IOrderData,
     private productService: IProductData,
     private customerUseCase: ICustomerUseCase,
   ) {}

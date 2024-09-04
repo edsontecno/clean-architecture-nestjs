@@ -15,13 +15,13 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { ErrorResponseBody } from 'src/system/filtros/filter-exception-global';
-import { Order } from 'src/application/order/core/domain/Order';
-import { OrderDto } from './dto/order.dto';
 import { Response } from 'express';
-import { CreateOrderDto } from './dto/create-order.dto';
-import { OrderServicePort } from 'src/application/order/ports/input/OrderServicePort';
+import { OrderAdapterController } from 'src/adapters/order/controller/OrderAdapterController';
+import { Order } from 'src/application/order/entities/Order';
 import { MessageDTO } from 'src/system/dto/message.dto';
+import { ErrorResponseBody } from 'src/system/filtros/filter-exception-global';
+import { CreateOrderDto } from './dto/create-order.dto';
+import { OrderDto } from './dto/order.dto';
 
 @ApiTags('Pedidos')
 @ApiBadRequestResponse({
@@ -31,7 +31,7 @@ import { MessageDTO } from 'src/system/dto/message.dto';
 @ApiInternalServerErrorResponse({ description: 'Erro do servidor' })
 @Controller('orders')
 export class OrderController {
-  constructor(private readonly adapter: OrderServicePort) {}
+  constructor(private readonly adapter: OrderAdapterController) {}
 
   @Post()
   @ApiOperation({ summary: 'Cadastrar pedidos' })

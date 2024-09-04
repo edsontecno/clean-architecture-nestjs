@@ -1,15 +1,15 @@
+import { IOrderData } from 'src/application/order/interfaces/IOrderData';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { OrderEntity } from './Order.entity';
 import { OrderItemEntity } from './OrderItem.entity';
-import { OrderStatus } from 'src/application/order/core/domain/OrderStatus';
-import { Order } from 'src/application/order/core/domain/Order';
+import { OrderStatus } from 'src/application/order/entities/OrderStatus';
+import { Order } from 'src/application/order/entities/Order';
 import { CustomerEntity } from 'src/adapters/custumer/gateway/Customer.entity';
-import { OrderProcess } from 'src/application/order/core/domain/OrderProcess';
-import { OrderPersistPort } from 'src/application/order/ports/output/OrderPersistPort';
+import { OrderProcess } from 'src/application/order/entities/OrderProcess';
 import { ProductEntity } from 'src/adapters/product/gateway/Product.entity';
 
-export class OrderPersistAdapter implements OrderPersistPort {
+export class OrderGateway implements IOrderData {
   constructor(
     @InjectRepository(OrderEntity)
     private readonly repository: Repository<OrderEntity>,

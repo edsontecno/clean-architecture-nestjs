@@ -1,8 +1,8 @@
-import { OrderProcess } from '../../core/domain/OrderProcess';
-import { Order } from '../../core/domain/Order';
-import { OrderStatus } from '../../core/domain/OrderStatus';
+import { OrderProcess } from '../entities/OrderProcess';
+import { Order } from '../entities/Order';
+import { OrderStatus } from '../entities/OrderStatus';
 
-export abstract class OrderPersistPort {
+export abstract class IOrderData {
   abstract save(order: OrderProcess): Promise<number>;
   abstract changeOrderStatus(id: number, status: OrderStatus);
   abstract getAllByStatus(status: OrderStatus);

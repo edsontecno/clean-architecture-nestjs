@@ -1,6 +1,6 @@
-import { Order } from '../../core/domain/Order';
+import { Order } from '../entities/Order';
 
-export abstract class OrderServicePort {
+export abstract class IOrderUseCase {
   abstract save(order: Order): Promise<number>;
   abstract getAllByStatus(status): Promise<Order[]>;
   abstract changeStatus(id, status): Promise<string>;

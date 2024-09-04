@@ -1,4 +1,4 @@
-import { OrderStatus } from 'src/application/order/core/domain/OrderStatus';
+import { OrderStatus } from 'src/application/order/entities/OrderStatus';
 import { CustomerEntity } from '../../custumer/gateway/Customer.entity';
 import {
   Column,

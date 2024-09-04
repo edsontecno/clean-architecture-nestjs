@@ -1,16 +1,19 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { OrderAdapterController } from 'src/adapters/order/controller/OrderAdapterController';
+import { OrderGateway } from 'src/adapters/order/gateway/OrderGateway';
+import { IOrderData } from 'src/application/order/interfaces/IOrderData';
+import { IOrderUseCase } from 'src/application/order/interfaces/IOrderUseCase';
+import { OrderUseCase } from 'src/application/order/useCases/OrderUseCase';
 import { CategoryModule } from 'src/drivers/category/category.module';
 import { CustomerModule } from 'src/drivers/customer/custumer.module';
 import { ProductModule } from 'src/drivers/product/product.module';
-import { CategoryEntity } from '../category/gateway/Category.entity';
-import { CustomerEntity } from '../custumer/gateway/Customer.entity';
-import { ProductEntity } from '../product/gateway/Product.entity';
-import { OrderInput } from './input';
-import { OrderController } from './input/order.controller';
-import { OrderOutput } from './output';
-import { OrderEntity } from './output/Order.entity';
-import { OrderItemEntity } from './output/OrderItem.entity';
+import { CategoryEntity } from '../../adapters/category/gateway/Category.entity';
+import { CustomerEntity } from '../../adapters/custumer/gateway/Customer.entity';
+import { OrderEntity } from '../../adapters/order/gateway/Order.entity';
+import { OrderItemEntity } from '../../adapters/order/gateway/OrderItem.entity';
+import { ProductEntity } from '../../adapters/product/gateway/Product.entity';
+import { OrderController } from './order.controller';
 
 @Module({
   imports: [
@@ -27,8 +30,20 @@ import { OrderItemEntity } from './output/OrderItem.entity';
   ],
   controllers: [OrderController],
   providers: [
-    ...OrderOutput,
-    ...OrderInput,
+    {
+      provide: OrderAdapterController,
+      useClass: OrderAdapterController,
+    },
+    {
+      provide: IOrderData,
+      useClass: OrderGateway,
+    },
+    {
+      provide: IOrderUseCase,
+      useClass: OrderUseCase,
+    },
+    // ...OrderOutput,
+    // ...OrderInput,
     // {
     //   provide: IProductUseCase,
     //   useClass: ProductUseCase,
@@ -62,6 +77,15 @@ import { OrderItemEntity } from './output/OrderItem.entity';
     //   useClass: CategoryGateway,
     // },
   ],
-  exports: [...OrderOutput, ...OrderInput],
+  exports: [
+    {
+      provide: IOrderData,
+      useClass: OrderGateway,
+    },
+    {
+      provide: IOrderUseCase,
+      useClass: OrderUseCase,
+    },
+  ],
 })
 export class OrderModule {}

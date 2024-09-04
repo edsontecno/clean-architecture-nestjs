@@ -1,4 +1,4 @@
-import { Order } from 'src/application/order/core/domain/Order';
+import { Order } from 'src/application/order/entities/Order';
 
 export class Customer {
   readonly id: number;
