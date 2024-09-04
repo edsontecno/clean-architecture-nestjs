@@ -1,0 +1,7 @@
+function gc() {
+     git add . && git commit -m "$*" -n
+}
+
+function gcp() {
+     git add . && git commit -m "$*" -n && git push
+}

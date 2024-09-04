@@ -1,0 +1,50 @@
+version: '3.9'
+
+services:
+  backend:
+    image: node:18
+    container_name: backend
+    volumes:
+      - ./:/app
+      - type: bind
+        source: ./backend.sh
+        target: /app/entrypoint.sh
+    working_dir: /app
+    command: sh ./entrypoint.sh
+    environment: 
+      SERVER_PORT: 3000
+      DB_HOST: ${DB_NAME}
+      DB_PORT: ${DB_PORT}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      DB_ADMIN_EMAIL: ${DB_ADMIN_EMAIL}
+    ports:
+      - 3000:3000
+    depends_on:
+      - postgres
+    networks:
+      - fiap  
+
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      PGDATA: /data/postgres
+    volumes:
+       - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - fiap
+    restart: unless-stopped
+
+networks:
+  fiap:
+    driver: bridge
+
+volumes:
+    postgres:
