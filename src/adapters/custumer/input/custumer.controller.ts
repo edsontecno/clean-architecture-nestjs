@@ -16,7 +16,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { ErrorResponseBody } from 'src/filtros/filter-exception-global';
+import { ErrorResponseBody } from 'src/system/filtros/filter-exception-global';
 import { Response } from 'express';
 import { CustomerServicePort } from 'src/application/custumer/ports/input/CustomerServicePort';
 import { CustomerDTO } from './dto/CustomerDto';

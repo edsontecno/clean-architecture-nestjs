@@ -7,7 +7,7 @@ import { Order } from 'src/application/order/core/domain/Order';
 import { CustomerEntity } from 'src/adapters/custumer/output/Customer.entity';
 import { OrderProcess } from 'src/application/order/core/domain/OrderProcess';
 import { OrderPersistPort } from 'src/application/order/ports/output/OrderPersistPort';
-import { ProductEntity } from 'src/adapters/product/output/Product.entity';
+import { ProductEntity } from 'src/adapters/product/gateway/Product.entity';
 
 export class OrderPersistAdapter implements OrderPersistPort {
   constructor(

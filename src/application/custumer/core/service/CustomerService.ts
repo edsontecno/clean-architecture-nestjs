@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Customer } from '../domain/Customer';
 import { CustomerServicePort } from '../../ports/input/CustomerServicePort';
 import { CustomerPersistPort } from '../../ports/output/CustomerPersistPort';
-import { BusinessRuleException } from 'src/filtros/business-rule-exception';
+import { BusinessRuleException } from 'src/system/filtros/business-rule-exception';
 import { cpf } from 'cpf-cnpj-validator';
 import { Service } from 'src/application/service/service';
 import { emailIsValid } from 'src/application/utils/utils';

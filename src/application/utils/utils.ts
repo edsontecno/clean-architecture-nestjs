@@ -1,4 +1,4 @@
-import { BusinessRuleException } from 'src/filtros/business-rule-exception';
+import { BusinessRuleException } from 'src/system/filtros/business-rule-exception';
 
 export const fieldIsValid = (field: any, message: string) => {
   if (field === undefined) {

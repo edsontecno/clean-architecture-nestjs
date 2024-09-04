@@ -4,22 +4,22 @@ import { OrderInput } from './input';
 import { OrderController } from './input/order.controller';
 import { OrderOutput } from './output';
 import { OrderEntity } from './output/Order.entity';
-import { ProductServicePort } from 'src/application/product/ports/input/ProductServicePort';
-import { ProductService } from 'src/application/product/core/service/ProductService';
-import { ProductPersistPort } from 'src/application/product/ports/output/ProductPersistPort';
-import { CategoryPersistAdapter } from '../category/output/CategoryPersitAdapter';
-import { CategoryEntity } from '../category/output/Category.entity';
-import { CategoryServicePort } from 'src/application/category/ports/input/CategoryServicePort';
-import { CategoryService } from 'src/application/category/core/service/CategoryService';
-import { CategoryPersistPort } from 'src/application/category/ports/output/CategoryPersistPort';
+import { IProductUseCase } from 'src/application/product/interfaces/IProductUseCase';
+import { ProductUseCase } from 'src/application/product/useCases/ProductUseCase';
+import { IProductData } from 'src/application/product/interfaces/IProductData';
+import { ICategoryUseCase } from 'src/application/category/interfaces/ICategoryUseCase';
+import { CategoryUseCase } from 'src/application/category/useCases/CategoryUseCase';
 import { CustomerEntity } from '../custumer/output/Customer.entity';
 import { CustomerServicePort } from 'src/application/custumer/ports/input/CustomerServicePort';
 import { CustomerService } from 'src/application/custumer/core/service/CustomerService';
 import { CustomerPersistPort } from 'src/application/custumer/ports/output/CustomerPersistPort';
 import { CustomerPersistAdapter } from '../custumer/output/CustomerPersitAdapter';
 import { OrderItemEntity } from './output/OrderItem.entity';
-import { ProductEntity } from '../product/output/Product.entity';
-import { ProductPersistAdapter } from '../product/output/ProductPersitAdapter';
+import { ProductEntity } from '../product/gateway/Product.entity';
+import { ProductGateway } from '../product/gateway/ProductGateway';
+import { CategoryEntity } from '../category/gateway/Category.entity';
+import { ICategoryData } from 'src/application/category/interfaces/ICategoryData';
+import { CategoryGateway } from '../category/gateway/CategoryGateway';
 
 @Module({
   imports: [
@@ -36,12 +36,12 @@ import { ProductPersistAdapter } from '../product/output/ProductPersitAdapter';
     ...OrderOutput,
     ...OrderInput,
     {
-      provide: ProductServicePort,
-      useClass: ProductService,
+      provide: IProductUseCase,
+      useClass: ProductUseCase,
     },
     {
-      provide: ProductPersistPort,
-      useClass: ProductPersistAdapter,
+      provide: IProductData,
+      useClass: ProductGateway,
     },
     {
       provide: CustomerServicePort,
@@ -52,12 +52,12 @@ import { ProductPersistAdapter } from '../product/output/ProductPersitAdapter';
       useClass: CustomerPersistAdapter,
     },
     {
-      provide: CategoryServicePort,
-      useClass: CategoryService,
+      provide: ICategoryUseCase,
+      useClass: CategoryUseCase,
     },
     {
-      provide: CategoryPersistPort,
-      useClass: CategoryPersistAdapter,
+      provide: ICategoryData,
+      useClass: CategoryGateway,
     },
   ],
   exports: [...OrderOutput, ...OrderInput],

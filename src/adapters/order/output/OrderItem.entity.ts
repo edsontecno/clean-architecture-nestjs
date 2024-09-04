@@ -1,4 +1,4 @@
-import { ProductEntity } from 'src/adapters/product/output/Product.entity';
+import { ProductEntity } from 'src/adapters/product/gateway/Product.entity';
 import { OrderEntity } from './Order.entity';
 import {
   Column,

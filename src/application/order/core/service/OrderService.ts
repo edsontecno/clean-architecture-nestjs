@@ -1,20 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { Order } from '../domain/Order';
-import { BusinessRuleException } from 'src/filtros/business-rule-exception';
+import { BusinessRuleException } from 'src/system/filtros/business-rule-exception';
 import { timeInMinutes } from 'src/application/utils/utils';
 import { OrderProcess } from '../domain/OrderProcess';
 import { OrderStatus } from '../domain/OrderStatus';
 import { OrderPersistPort } from '../../ports/output/OrderPersistPort';
 import { OrderServicePort } from '../../ports/input/OrderServicePort';
 import { OrderItem } from '../domain/OrderItems';
-import { ProductPersistPort } from 'src/application/product/ports/output/ProductPersistPort';
+import { IProductData } from 'src/application/product/interfaces/IProductData';
 import { CustomerServicePort } from 'src/application/custumer/ports/input/CustomerServicePort';
 
 @Injectable()
 export class OrderService implements OrderServicePort {
   constructor(
     private persist: OrderPersistPort,
-    private productService: ProductPersistPort,
+    private productService: IProductData,
     private costumerService: CustomerServicePort,
   ) {}
 

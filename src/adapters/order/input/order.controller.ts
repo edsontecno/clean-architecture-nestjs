@@ -15,13 +15,13 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { ErrorResponseBody } from 'src/filtros/filter-exception-global';
+import { ErrorResponseBody } from 'src/system/filtros/filter-exception-global';
 import { Order } from 'src/application/order/core/domain/Order';
 import { OrderDto } from './dto/order.dto';
 import { Response } from 'express';
-import { MessageDTO } from 'src/adapters/dto/message.dto';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { OrderServicePort } from 'src/application/order/ports/input/OrderServicePort';
+import { MessageDTO } from 'src/system/dto/message.dto';
 
 @ApiTags('Pedidos')
 @ApiBadRequestResponse({
