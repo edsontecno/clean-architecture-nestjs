@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { Customer } from '../domain/Customer';
-import { CustomerServicePort } from '../../ports/input/CustomerServicePort';
-import { CustomerPersistPort } from '../../ports/output/CustomerPersistPort';
 import { BusinessRuleException } from 'src/system/filtros/business-rule-exception';
 import { cpf } from 'cpf-cnpj-validator';
 import { Service } from 'src/application/service/service';
 import { emailIsValid } from 'src/application/utils/utils';
+import { ICustomerUseCase } from '../interfaces/ICustomerUseCase';
+import { ICustomerData } from '../interfaces/ICustomerData';
+import { Customer } from '../entities/Customer';
 
 @Injectable()
-export class CustomerService extends Service implements CustomerServicePort {
-  constructor(private persist: CustomerPersistPort) {
+export class CustomerUseCase extends Service implements ICustomerUseCase {
+  constructor(private persist: ICustomerData) {
     super();
   }
 

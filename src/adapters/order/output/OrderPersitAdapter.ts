@@ -4,7 +4,7 @@ import { OrderEntity } from './Order.entity';
 import { OrderItemEntity } from './OrderItem.entity';
 import { OrderStatus } from 'src/application/order/core/domain/OrderStatus';
 import { Order } from 'src/application/order/core/domain/Order';
-import { CustomerEntity } from 'src/adapters/custumer/output/Customer.entity';
+import { CustomerEntity } from 'src/adapters/custumer/gateway/Customer.entity';
 import { OrderProcess } from 'src/application/order/core/domain/OrderProcess';
 import { OrderPersistPort } from 'src/application/order/ports/output/OrderPersistPort';
 import { ProductEntity } from 'src/adapters/product/gateway/Product.entity';

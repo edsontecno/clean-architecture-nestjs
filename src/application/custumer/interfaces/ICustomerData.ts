@@ -1,8 +1,8 @@
-import { Customer } from '../../core/domain/Customer';
+import { Customer } from '../entities/Customer';
 
-export abstract class CustomerServicePort {
+export abstract class ICustomerData {
   abstract saveCustomer(customer: Customer): Promise<void>;
-  abstract getCustomer(cpf: string): Promise<Customer>;
+  abstract getCustomerByCpf(cpf: string): Promise<Customer>;
   abstract deleteCustomer(cpf: string): Promise<void>;
   abstract updateCustomer(cpf: string, customer: Customer): Promise<Customer>;
 }

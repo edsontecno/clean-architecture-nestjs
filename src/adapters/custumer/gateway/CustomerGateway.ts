@@ -1,10 +1,10 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CustomerEntity } from './Customer.entity';
-import { CustomerPersistPort } from 'src/application/custumer/ports/output/CustomerPersistPort';
-import { Customer } from 'src/application/custumer/core/domain/Customer';
+import { Customer } from 'src/application/custumer/entities/Customer';
+import { ICustomerData } from 'src/application/custumer/interfaces/ICustomerData';
 
-export class CustomerPersistAdapter implements CustomerPersistPort {
+export class CustomerGateway implements ICustomerData {
   constructor(
     @InjectRepository(CustomerEntity)
     private readonly usuarioRepository: Repository<CustomerEntity>,

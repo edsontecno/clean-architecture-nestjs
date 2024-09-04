@@ -38,12 +38,28 @@ import { ProductGateway } from 'src/adapters/product/gateway/ProductGateway';
     },
   ],
   exports: [
+    {
+      provide: IProductUseCase,
+      useClass: ProductUseCase,
+    },
+    {
+      provide: IProductData,
+      useClass: ProductGateway,
+    },
+    // {
+    //   provide: ICategoryUseCase,
+    //   useClass: CategoryUseCase,
+    // },
+    // {
+    //   provide: CategoryUseCase,
+    //   useClass: CategoryUseCase,
+    // },
     // ...ProductOutput,
     // ...ProductInput,
-    {
-      provide: ICategoryUseCase,
-      useClass: CategoryUseCase,
-    },
+    // {
+    //   provide: ICategoryUseCase,
+    //   useClass: CategoryUseCase,
+    // },
     // {
     //   provide: CategoryPersistPort,
     //   useClass: CategoryPersistAdapter,

@@ -8,14 +8,14 @@ import { OrderPersistPort } from '../../ports/output/OrderPersistPort';
 import { OrderServicePort } from '../../ports/input/OrderServicePort';
 import { OrderItem } from '../domain/OrderItems';
 import { IProductData } from 'src/application/product/interfaces/IProductData';
-import { CustomerServicePort } from 'src/application/custumer/ports/input/CustomerServicePort';
+import { ICustomerUseCase } from 'src/application/custumer/interfaces/ICustomerUseCase';
 
 @Injectable()
 export class OrderService implements OrderServicePort {
   constructor(
     private persist: OrderPersistPort,
     private productService: IProductData,
-    private costumerService: CustomerServicePort,
+    private customerUseCase: ICustomerUseCase,
   ) {}
 
   async save(order: Order): Promise<number> {
@@ -26,7 +26,7 @@ export class OrderService implements OrderServicePort {
     orderProcess.items = [];
 
     if (order.customerId) {
-      const customer = await this.costumerService.getCustomer(order.customerId);
+      const customer = await this.customerUseCase.getCustomer(order.customerId);
 
       if (customer.id === undefined) {
         throw new BusinessRuleException(
