@@ -17,6 +17,9 @@ export class PostgresConfigService implements TypeOrmOptionsFactory {
       entities: [__dirname + '/../../**/*.entity.{js,ts}'],
       synchronize: false,
       logging: false,
+      extra: {
+        options: '-c timezone=America/Sao_Paulo',
+      },
       migrationsRun: true,
       migrations: [__dirname + '/../db/migrations/**/*{.ts,.js}'],
     };

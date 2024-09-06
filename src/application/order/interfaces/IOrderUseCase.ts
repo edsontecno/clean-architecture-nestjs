@@ -6,4 +6,6 @@ export abstract class IOrderUseCase {
   abstract changeStatus(id, status): Promise<string>;
   abstract getOrderByCustomer(cpf): Promise<Order[]>;
   abstract getListStatus(): string[];
+  abstract getById(id: number): Promise<Order>;
+  abstract getOrders(): Promise<Order[]>;
 }

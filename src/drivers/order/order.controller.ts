@@ -42,7 +42,18 @@ export class OrderController {
   async save(@Body() orderDto: CreateOrderDto) {
     const order = new Order();
     Object.assign(order, orderDto);
-    await this.adapter.save(order);
+    return await this.adapter.save(order);
+  }
+
+  @Get()
+  @ApiOperation({ summary: 'Listar pedidos em andamento' })
+  @ApiResponse({
+    status: 200,
+    description: 'Lista de pedidos em andamento',
+    type: [OrderDto],
+  })
+  getOrders() {
+    return this.adapter.getOrders();
   }
 
   @Get('/status/:status')
@@ -54,6 +65,28 @@ export class OrderController {
   })
   getAll(@Param('status') status: string) {
     return this.adapter.getAllByStatus(status);
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'Consultar pedido por id' })
+  @ApiResponse({
+    status: 200,
+    description: 'Consultar pedido por id',
+    type: OrderDto,
+  })
+  findOne(@Param('id') id: number) {
+    return this.adapter.getById(id);
+  }
+
+  @Get(':id/status')
+  @ApiOperation({ summary: 'Consultar pedido por id' })
+  @ApiResponse({
+    status: 200,
+    description: 'Consultar pedido por id',
+    type: OrderDto,
+  })
+  findStatusOrder(@Param('id') id: number) {
+    return this.adapter.findStatusOrder(id);
   }
 
   @Get('/customer/:cpf')

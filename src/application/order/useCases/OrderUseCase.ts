@@ -19,7 +19,6 @@ export class OrderUseCase implements IOrderUseCase {
   ) {}
 
   async save(order: Order): Promise<number> {
-    console.log(order);
     const orderProcess = new OrderProcess();
     orderProcess.status = OrderStatus.Pending;
     orderProcess.total = 0;
@@ -129,12 +128,16 @@ export class OrderUseCase implements IOrderUseCase {
   }
 
   async changeStatus(id: number, status: OrderStatus) {
-    const order = await this.persist.get(id);
+    const order = await this.getById(id);
     if (!this.checkTransactionStatus(order.status, status)) {
       throw new BusinessRuleException('Transição de status inválida');
     }
     await this.persist.changeStatus(id, status);
     return 'Pedido alterado com sucesso';
+  }
+
+  async getById(id: number): Promise<Order> {
+    return await this.persist.get(id);
   }
 
   async getOrderByCustomer(cpf: any): Promise<Order[]> {
@@ -145,5 +148,16 @@ export class OrderUseCase implements IOrderUseCase {
 
   getListStatus(): string[] {
     return Object.values(OrderStatus);
+  }
+
+  async getOrders(): Promise<Order[]> {
+    const orderInProcess = [
+      OrderStatus.InProgress,
+      OrderStatus.Received,
+      OrderStatus.Ready,
+    ];
+    const orders = await this.persist.getOrders(orderInProcess);
+    this.addAwaitTimeOnOrders(orders);
+    return orders;
   }
 }

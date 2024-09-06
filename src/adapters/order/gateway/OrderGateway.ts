@@ -1,13 +1,13 @@
-import { IOrderData } from 'src/application/order/interfaces/IOrderData';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CustomerEntity } from 'src/adapters/custumer/gateway/Customer.entity';
+import { ProductEntity } from 'src/adapters/product/gateway/Product.entity';
+import { Order } from 'src/application/order/entities/Order';
+import { OrderProcess } from 'src/application/order/entities/OrderProcess';
+import { IOrderData } from 'src/application/order/interfaces/IOrderData';
 import { Repository } from 'typeorm';
+import { OrderStatus } from './../../../application/order/entities/OrderStatus';
 import { OrderEntity } from './Order.entity';
 import { OrderItemEntity } from './OrderItem.entity';
-import { OrderStatus } from 'src/application/order/entities/OrderStatus';
-import { Order } from 'src/application/order/entities/Order';
-import { CustomerEntity } from 'src/adapters/custumer/gateway/Customer.entity';
-import { OrderProcess } from 'src/application/order/entities/OrderProcess';
-import { ProductEntity } from 'src/adapters/product/gateway/Product.entity';
 
 export class OrderGateway implements IOrderData {
   constructor(
@@ -83,5 +83,35 @@ export class OrderGateway implements IOrderData {
     const order = new Order();
     Object.assign(order, entity);
     return order;
+  }
+
+  async getOrders(status: OrderStatus[]): Promise<Order[]> {
+    const ordersEntity = await this.repository
+      .createQueryBuilder('pedido')
+      .where('pedido.status IN (:...statuses)', {
+        statuses: status,
+      })
+      .orderBy(
+        `CASE 
+          WHEN pedido.status = 'pronto' THEN 1
+          WHEN pedido.status = 'em preparação' THEN 2
+          WHEN pedido.status = 'recebido' THEN 3
+          WHEN pedido.status = 'pendente' THEN 4
+          WHEN pedido.status = 'finalizado' THEN 5
+          WHEN pedido.status = 'cancelado' THEN 6
+          ELSE 7
+        END`,
+        'ASC',
+      )
+      .addOrderBy('pedido.createdAt', 'ASC')
+      .getMany();
+
+    const orders: Order[] = [];
+    for (const item of ordersEntity) {
+      const newOrder = new Order();
+      Object.assign(newOrder, item);
+      orders.push(newOrder);
+    }
+    return orders;
   }
 }

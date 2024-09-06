@@ -10,7 +10,7 @@ export class OrderAdapterController {
   async save(orderDto: CreateOrderDto) {
     const order = new Order();
     Object.assign(order, orderDto);
-    await this.useCase.save(order);
+    return await this.useCase.save(order);
   }
 
   getAllByStatus(status: string) {
@@ -27,5 +27,19 @@ export class OrderAdapterController {
 
   async getListStatus() {
     return await this.useCase.getListStatus();
+  }
+
+  async getById(id: number) {
+    return await this.useCase.getById(id);
+  }
+
+  async findStatusOrder(id: number) {
+    const order = await this.useCase.getById(id);
+    return order.status;
+  }
+
+  async getOrders() {
+    const orders = await this.useCase.getOrders();
+    return orders;
   }
 }

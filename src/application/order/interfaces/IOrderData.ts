@@ -9,4 +9,5 @@ export abstract class IOrderData {
   abstract changeStatus(id: number, status: OrderStatus): Promise<string>;
   abstract getOrdersByCustomer(cpf: string): Promise<Order[]>;
   abstract get(id: number): Promise<Order>;
+  abstract getOrders(status: OrderStatus[]): Promise<Order[]>;
 }
