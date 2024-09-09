@@ -8,6 +8,7 @@ import { Repository } from 'typeorm';
 import { OrderStatus } from './../../../application/order/entities/OrderStatus';
 import { OrderEntity } from './Order.entity';
 import { OrderItemEntity } from './OrderItem.entity';
+import { CreateOrderDto } from '../dto/create-order.dto';
 
 export class OrderGateway implements IOrderData {
   constructor(
@@ -113,5 +114,11 @@ export class OrderGateway implements IOrderData {
       orders.push(newOrder);
     }
     return orders;
+  }
+
+  convertDtoToEntity(dto: CreateOrderDto): Order {
+    const order = new Order();
+    Object.assign(order, dto);
+    return order;
   }
 }

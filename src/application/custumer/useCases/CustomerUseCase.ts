@@ -55,14 +55,14 @@ export class CustomerUseCase extends Service implements ICustomerUseCase {
 
     if (customer.orders.length > 0) {
       throw new BusinessRuleException(
-        'Não é possível deletar customers com orders vinculados',
+        'Não é possível deletar customers com pedidos vinculados',
       );
     }
 
     this.persist.deleteCustomer(cpf);
   }
 
-  private async cpfExiste(cpf: string) {
+  private async cpfExiste(cpf: string): Promise<Customer> {
     const customerPesquisado = await this.getCustomer(cpf);
     if (customerPesquisado.cpf === undefined) {
       throw new BusinessRuleException('CPF não localizado na base de dados');

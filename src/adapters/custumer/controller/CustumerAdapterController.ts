@@ -1,15 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { Customer } from 'src/application/custumer/entities/Customer';
+import { ICustomerData } from 'src/application/custumer/interfaces/ICustomerData';
 import { ICustomerUseCase } from 'src/application/custumer/interfaces/ICustomerUseCase';
-import { CustomerDTO } from 'src/drivers/customer/CustomerDto';
+import { CustomerDTO } from '../dto/CustomerDto';
 
 @Injectable()
 export class CustumerAdapterController {
-  constructor(private readonly useCase: ICustomerUseCase) {}
+  constructor(
+    private readonly useCase: ICustomerUseCase,
+    private gateway: ICustomerData,
+  ) {}
 
   async saveCustomer(dadosDoUsuario: CustomerDTO) {
-    const customer = new Customer();
-    Object.assign(customer, dadosDoUsuario);
+    const customer = this.gateway.convertCustomerDtoToEntity(dadosDoUsuario);
     await this.useCase.saveCustomer(customer);
   }
 
@@ -22,9 +24,7 @@ export class CustumerAdapterController {
   }
 
   async updateCustomer(cpf: string, dadosDoUsuario: CustomerDTO) {
-    const customer = new Customer();
-    Object.assign(customer, dadosDoUsuario);
-
+    const customer = this.gateway.convertCustomerDtoToEntity(dadosDoUsuario);
     return await this.useCase.updateCustomer(cpf, customer);
   }
 }

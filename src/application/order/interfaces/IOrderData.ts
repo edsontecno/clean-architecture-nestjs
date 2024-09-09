@@ -1,5 +1,6 @@
-import { OrderProcess } from '../entities/OrderProcess';
+import { CreateOrderDto } from 'src/adapters/order/dto/create-order.dto';
 import { Order } from '../entities/Order';
+import { OrderProcess } from '../entities/OrderProcess';
 import { OrderStatus } from '../entities/OrderStatus';
 
 export abstract class IOrderData {
@@ -10,4 +11,5 @@ export abstract class IOrderData {
   abstract getOrdersByCustomer(cpf: string): Promise<Order[]>;
   abstract get(id: number): Promise<Order>;
   abstract getOrders(status: OrderStatus[]): Promise<Order[]>;
+  abstract convertDtoToEntity(dto: CreateOrderDto): Order;
 }

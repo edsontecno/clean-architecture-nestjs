@@ -6,4 +6,10 @@ export class OrderProcess {
   customerId: number;
   total: number;
   status: OrderStatus;
+
+  constructor() {
+    this.status = OrderStatus.Pending;
+    this.total = 0;
+    this.items = [];
+  }
 }

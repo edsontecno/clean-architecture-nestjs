@@ -3,6 +3,7 @@ import { IProductData } from 'src/application/product/interfaces/IProductData';
 import { QueryFailedError, Repository } from 'typeorm';
 import { Product } from 'src/application/product/entities/Product';
 import { ProductEntity } from './Product.entity';
+import { CreateProductDto } from '../dto/create-product.dto';
 
 export class ProductGateway implements IProductData {
   constructor(
@@ -55,5 +56,11 @@ export class ProductGateway implements IProductData {
       result.push(newProduct);
     });
     return result;
+  }
+
+  convertDtoToEntity(dto: CreateProductDto): Product {
+    const product = new Product();
+    Object.assign(product, dto);
+    return product;
   }
 }

@@ -3,6 +3,7 @@ import { Repository } from 'typeorm';
 import { CustomerEntity } from './Customer.entity';
 import { Customer } from 'src/application/custumer/entities/Customer';
 import { ICustomerData } from 'src/application/custumer/interfaces/ICustomerData';
+import { CustomerDTO } from '../dto/CustomerDto';
 
 export class CustomerGateway implements ICustomerData {
   constructor(
@@ -40,6 +41,12 @@ export class CustomerGateway implements ICustomerData {
     entity.id = customerEntity.id;
 
     await this.usuarioRepository.save(entity);
+    return customer;
+  }
+
+  convertCustomerDtoToEntity(dto: CustomerDTO): Customer {
+    const customer = new Customer();
+    Object.assign(customer, dto);
     return customer;
   }
 }

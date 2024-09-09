@@ -1,15 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { Order } from 'src/application/order/entities/Order';
+import { CreateOrderDto } from 'src/adapters/order/dto/create-order.dto';
+import { IOrderData } from 'src/application/order/interfaces/IOrderData';
 import { IOrderUseCase } from 'src/application/order/interfaces/IOrderUseCase';
-import { CreateOrderDto } from 'src/drivers/order/dto/create-order.dto';
 
 @Injectable()
 export class OrderAdapterController {
-  constructor(private readonly useCase: IOrderUseCase) {}
+  constructor(
+    private readonly useCase: IOrderUseCase,
+    private gateway: IOrderData,
+  ) {}
 
   async save(orderDto: CreateOrderDto) {
-    const order = new Order();
-    Object.assign(order, orderDto);
+    const order = this.gateway.convertDtoToEntity(orderDto);
     return await this.useCase.save(order);
   }
 

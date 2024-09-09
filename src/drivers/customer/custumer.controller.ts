@@ -19,7 +19,7 @@ import {
 import { ErrorResponseBody } from 'src/system/filtros/filter-exception-global';
 import { Response } from 'express';
 import { CustumerAdapterController } from 'src/adapters/custumer/controller/CustumerAdapterController';
-import { CustomerDTO } from './CustomerDto';
+import { CustomerDTO } from '../../adapters/custumer/dto/CustomerDto';
 import { Customer } from 'src/application/custumer/entities/Customer';
 
 @Controller('custumer')

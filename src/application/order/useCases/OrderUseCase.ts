@@ -20,9 +20,6 @@ export class OrderUseCase implements IOrderUseCase {
 
   async save(order: Order): Promise<number> {
     const orderProcess = new OrderProcess();
-    orderProcess.status = OrderStatus.Pending;
-    orderProcess.total = 0;
-    orderProcess.items = [];
 
     if (order.customerId) {
       const customer = await this.customerUseCase.getCustomer(order.customerId);

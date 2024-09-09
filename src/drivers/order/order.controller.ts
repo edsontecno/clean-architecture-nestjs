@@ -20,8 +20,8 @@ import { OrderAdapterController } from 'src/adapters/order/controller/OrderAdapt
 import { Order } from 'src/application/order/entities/Order';
 import { MessageDTO } from 'src/system/dto/message.dto';
 import { ErrorResponseBody } from 'src/system/filtros/filter-exception-global';
-import { CreateOrderDto } from './dto/create-order.dto';
-import { OrderDto } from './dto/order.dto';
+import { CreateOrderDto } from '../../adapters/order/dto/create-order.dto';
+import { OrderDto } from '../../adapters/order/dto/order.dto';
 
 @ApiTags('Pedidos')
 @ApiBadRequestResponse({

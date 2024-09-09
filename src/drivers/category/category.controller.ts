@@ -20,8 +20,8 @@ import { Response } from 'express';
 import { CategoryAdapterController } from 'src/adapters/category/controller/CategoryAdapterController';
 import { Category } from 'src/application/category/entites/Category';
 import { ErrorResponseBody } from 'src/system/filtros/filter-exception-global';
-import { CategoryDto } from './category.dto';
-import { CreateCategoryDto } from './create-category.dto';
+import { CategoryDto } from '../../adapters/category/dto/category.dto';
+import { CreateCategoryDto } from '../../adapters/category/dto/create-category.dto';
 
 @ApiTags('Categoria')
 @ApiBadRequestResponse({

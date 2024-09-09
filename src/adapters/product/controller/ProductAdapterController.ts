@@ -1,15 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { Product } from 'src/application/product/entities/Product';
+import { IProductData } from 'src/application/product/interfaces/IProductData';
 import { IProductUseCase } from 'src/application/product/interfaces/IProductUseCase';
-import { CreateProductDto } from 'src/drivers/product/create-product.dto';
+import { CreateProductDto } from '../dto/create-product.dto';
 
 @Injectable()
 export class ProductAdapterController {
-  constructor(private readonly useCase: IProductUseCase) {}
+  constructor(
+    private readonly useCase: IProductUseCase,
+    private gateway: IProductData,
+  ) {}
 
   async create(productDto: CreateProductDto) {
-    const product = new Product();
-    Object.assign(product, productDto);
+    const product = this.gateway.convertDtoToEntity(productDto);
     await this.useCase.save(product);
   }
 
@@ -22,8 +24,7 @@ export class ProductAdapterController {
   }
 
   update(id: number, productDto: CreateProductDto) {
-    const product = new Product();
-    Object.assign(product, productDto);
+    const product = this.gateway.convertDtoToEntity(productDto);
     return this.useCase.update(id, product);
   }
 
