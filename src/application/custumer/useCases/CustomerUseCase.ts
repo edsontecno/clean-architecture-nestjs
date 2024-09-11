@@ -72,9 +72,10 @@ export class CustomerUseCase extends Service implements ICustomerUseCase {
   }
 
   async updateCustomer(cpf: string, customer: Customer): Promise<Customer> {
-    const customerPesquisado = await this.cpfExiste(cpf);
-    Object.assign(customerPesquisado, customer);
-    this.validarRegrasCustomer(customerPesquisado);
-    return this.persist.updateCustomer(cpf, customerPesquisado);
+    await this.cpfExiste(cpf);
+    console.log(cpf);
+    customer.cpf = cpf;
+    this.validarRegrasCustomer(customer);
+    return this.persist.updateCustomer(customer);
   }
 }

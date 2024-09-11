@@ -5,10 +5,14 @@ import { Order } from 'src/application/order/entities/Order';
 import { OrderProcess } from 'src/application/order/entities/OrderProcess';
 import { IOrderData } from 'src/application/order/interfaces/IOrderData';
 import { Repository } from 'typeorm';
-import { OrderStatus } from './../../../application/order/entities/OrderStatus';
+import {
+  getEnumFromString,
+  OrderStatus,
+} from './../../../application/order/entities/OrderStatus';
 import { OrderEntity } from './Order.entity';
 import { OrderItemEntity } from './OrderItem.entity';
 import { CreateOrderDto } from '../dto/create-order.dto';
+import { OrderItem } from 'src/application/order/entities/OrderItems';
 
 export class OrderGateway implements IOrderData {
   constructor(
@@ -48,9 +52,7 @@ export class OrderGateway implements IOrderData {
     });
     const orders = [];
     for (const entity of ordersEntity) {
-      const newOrder = new Order();
-      Object.assign(newOrder, entity);
-      orders.push(newOrder);
+      orders.push(this.convertDataToEntity(entity));
     }
     return orders;
   }
@@ -72,17 +74,21 @@ export class OrderGateway implements IOrderData {
     });
     const orders: Order[] = [];
     for (const item of ordersEntity) {
-      const newOrder = new Order();
-      Object.assign(newOrder, item);
-      orders.push(newOrder);
+      orders.push(this.convertDataToEntity(item));
     }
     return orders;
   }
 
   async get(id: number): Promise<Order> {
-    const entity = await this.repository.findOneBy({ id });
-    const order = new Order();
-    Object.assign(order, entity);
+    const entity = await this.repository.findOne({
+      where: {
+        id,
+      },
+      relations: ['itemsOrder', 'customer', 'itemsOrder.product'],
+    });
+    console.log(entity);
+    const order = this.convertDataToEntity(entity);
+    console.log(order);
     return order;
   }
 
@@ -109,9 +115,9 @@ export class OrderGateway implements IOrderData {
 
     const orders: Order[] = [];
     for (const item of ordersEntity) {
-      const newOrder = new Order();
-      Object.assign(newOrder, item);
-      orders.push(newOrder);
+      // const newOrder = new Order();
+      // Object.assign(newOrder, item);
+      orders.push(this.convertDataToEntity(item));
     }
     return orders;
   }
@@ -119,6 +125,27 @@ export class OrderGateway implements IOrderData {
   convertDtoToEntity(dto: CreateOrderDto): Order {
     const order = new Order();
     Object.assign(order, dto);
+    return order;
+  }
+
+  convertDataToEntity(data: OrderEntity): Order {
+    const order = new Order();
+    order.id = data.id;
+    order.createdAt = data.createdAt;
+    order.status = getEnumFromString(data.status);
+    order.total = data.total;
+    const items: OrderItem[] = [];
+    if (data.itemsOrder) {
+      data.itemsOrder.forEach((item) => {
+        const newOrderItem = new OrderItem();
+        newOrderItem.salePrice = item.precoVenda;
+        newOrderItem.productId = item.product.id;
+        newOrderItem.productName = item.product.name;
+        items.push(newOrderItem);
+      });
+      order.items = items;
+    }
+
     return order;
   }
 }

@@ -14,6 +14,7 @@ import { OrderEntity } from '../../adapters/order/gateway/Order.entity';
 import { OrderItemEntity } from '../../adapters/order/gateway/OrderItem.entity';
 import { ProductEntity } from '../../adapters/product/gateway/Product.entity';
 import { OrderController } from './order.controller';
+import { OrderPresenter } from 'src/adapters/order/presenter/OrderPresenter';
 
 @Module({
   imports: [
@@ -30,6 +31,10 @@ import { OrderController } from './order.controller';
   ],
   controllers: [OrderController],
   providers: [
+    {
+      provide: OrderPresenter,
+      useClass: OrderPresenter,
+    },
     {
       provide: OrderAdapterController,
       useClass: OrderAdapterController,

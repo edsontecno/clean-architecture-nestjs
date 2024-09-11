@@ -82,7 +82,10 @@ export class OrderUseCase implements IOrderUseCase {
 
   private addAwaitTimeOnOrders(orders: any) {
     orders.map(
-      (order) => (order.awaitTime = timeInMinutes(order.createdAt, new Date())),
+      (order) =>
+        (order.awaitTime = order.createdAt
+          ? timeInMinutes(order.createdAt, new Date())
+          : ''),
     );
   }
 

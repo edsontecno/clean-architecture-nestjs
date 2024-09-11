@@ -2,12 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { CreateOrderDto } from 'src/adapters/order/dto/create-order.dto';
 import { IOrderData } from 'src/application/order/interfaces/IOrderData';
 import { IOrderUseCase } from 'src/application/order/interfaces/IOrderUseCase';
+import { OrderPresenter } from '../presenter/OrderPresenter';
 
 @Injectable()
 export class OrderAdapterController {
   constructor(
     private readonly useCase: IOrderUseCase,
     private gateway: IOrderData,
+    private presenter: OrderPresenter,
   ) {}
 
   async save(orderDto: CreateOrderDto) {
@@ -15,12 +17,14 @@ export class OrderAdapterController {
     return await this.useCase.save(order);
   }
 
-  getAllByStatus(status: string) {
-    return this.useCase.getAllByStatus(status);
+  async getAllByStatus(status: string) {
+    const orders = await this.useCase.getAllByStatus(status);
+    return this.presenter.convertArrayEntityToArrayResponseDto(orders);
   }
 
-  getOrderByCustomer(cpf: string) {
-    return this.useCase.getOrderByCustomer(cpf);
+  async getOrderByCustomer(cpf: string) {
+    const orders = await this.useCase.getOrderByCustomer(cpf);
+    return this.presenter.convertArrayEntityToArrayResponseDto(orders);
   }
 
   async changeStatus(id: string, status: string) {
@@ -32,7 +36,8 @@ export class OrderAdapterController {
   }
 
   async getById(id: number) {
-    return await this.useCase.getById(id);
+    const order = await this.useCase.getById(id);
+    return this.presenter.convertEntityToResponseDto(order);
   }
 
   async findStatusOrder(id: number) {
@@ -42,6 +47,6 @@ export class OrderAdapterController {
 
   async getOrders() {
     const orders = await this.useCase.getOrders();
-    return orders;
+    return this.presenter.convertArrayEntityToArrayResponseDto(orders);
   }
 }

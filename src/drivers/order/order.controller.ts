@@ -56,6 +56,17 @@ export class OrderController {
     return this.adapter.getOrders();
   }
 
+  @Get('status')
+  @ApiOperation({ summary: 'Listar todos os status disponíveis' })
+  @ApiResponse({
+    status: 200,
+    description: 'Lista de status disponíveis para o pedidos',
+    type: [String],
+  })
+  async getListStatus() {
+    return await this.adapter.getListStatus();
+  }
+
   @Get('/status/:status')
   @ApiOperation({ summary: 'Listar pedidos por status' })
   @ApiResponse({
@@ -116,16 +127,5 @@ export class OrderController {
     return response.status(HttpStatus.OK).json({
       message: result,
     });
-  }
-
-  @Get('status')
-  @ApiOperation({ summary: 'Listar todos os status disponíveis' })
-  @ApiResponse({
-    status: 200,
-    description: 'Lista de status disponíveis para o pedidos',
-    type: [String],
-  })
-  async getListStatus() {
-    return await this.adapter.getListStatus();
   }
 }

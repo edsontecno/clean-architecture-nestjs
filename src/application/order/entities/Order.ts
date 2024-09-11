@@ -4,8 +4,11 @@ import { OrderItem } from './OrderItems';
 import { OrderStatus } from './OrderStatus';
 
 export class Order {
-  items: [OrderItem];
+  id: number;
+  total: number;
+  items: OrderItem[];
   customerId: string;
   status: OrderStatus;
   awaitTime: string;
+  createdAt: string;
 }

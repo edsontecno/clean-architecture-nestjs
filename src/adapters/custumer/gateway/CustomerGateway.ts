@@ -12,36 +12,48 @@ export class CustomerGateway implements ICustomerData {
   ) {}
 
   async saveCustomer(customer: Customer): Promise<void> {
-    const customerEntity = new CustomerEntity();
-    Object.assign(customerEntity, customer);
+    const customerEntity = this.convertEntityToData(customer);
     await this.usuarioRepository.save(customerEntity);
   }
 
   async getCustomerByCpf(cpf: string): Promise<Customer> {
-    const customer = await this.usuarioRepository.findOne({
+    const customer = await this.findOne(cpf);
+    const result = this.convertDataToEntity(customer);
+    return result;
+  }
+
+  private async findOne(cpf: string) {
+    return await this.usuarioRepository.findOne({
       where: {
         cpf,
       },
       relations: ['orders'],
     });
-    const result = new Customer();
-    Object.assign(result, customer);
-    return result;
   }
 
   async deleteCustomer(cpf: string): Promise<void> {
-    const customer = await this.getCustomerByCpf(cpf);
+    const customer = await this.findOne(cpf);
     this.usuarioRepository.delete(customer.id);
   }
 
-  async updateCustomer(cpf: string, customer: Customer): Promise<Customer> {
-    const customerEntity = await this.getCustomerByCpf(cpf);
-    const entity = new CustomerEntity();
+  async updateCustomer(customer: Customer): Promise<Customer> {
+    const entity = await this.findOne(customer.cpf);
     Object.assign(entity, customer);
-    entity.id = customerEntity.id;
 
     await this.usuarioRepository.save(entity);
     return customer;
+  }
+
+  private convertEntityToData(customer: Customer) {
+    const customerEntity = new CustomerEntity();
+    Object.assign(customerEntity, customer);
+    return customerEntity;
+  }
+
+  private convertDataToEntity(customer: CustomerEntity) {
+    const result = new Customer();
+    Object.assign(result, customer);
+    return result;
   }
 
   convertCustomerDtoToEntity(dto: CustomerDTO): Customer {
