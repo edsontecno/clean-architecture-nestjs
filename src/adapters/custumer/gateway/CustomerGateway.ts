@@ -1,9 +1,9 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CustomerEntity } from './Customer.entity';
-import { Customer } from 'src/application/custumer/entities/Customer';
-import { ICustomerData } from 'src/application/custumer/interfaces/ICustomerData';
 import { CustomerDTO } from '../dto/CustomerDto';
+import { CustomerEntity } from './Customer.entity';
+import { ICustomerData } from 'src/application/customer/interfaces/ICustomerData';
+import { Customer } from 'src/application/customer/entities/Customer';
 
 export class CustomerGateway implements ICustomerData {
   constructor(
@@ -11,9 +11,10 @@ export class CustomerGateway implements ICustomerData {
     private readonly usuarioRepository: Repository<CustomerEntity>,
   ) {}
 
-  async saveCustomer(customer: Customer): Promise<void> {
+  async saveCustomer(customer: Customer): Promise<Customer> {
     const customerEntity = this.convertEntityToData(customer);
     await this.usuarioRepository.save(customerEntity);
+    return this.convertDataToEntity(customerEntity);
   }
 
   async getCustomerByCpf(cpf: string): Promise<Customer> {

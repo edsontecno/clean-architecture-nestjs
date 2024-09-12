@@ -1,5 +1,4 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { CustomerEntity } from 'src/adapters/custumer/gateway/Customer.entity';
 import { ProductEntity } from 'src/adapters/product/gateway/Product.entity';
 import { Order } from 'src/application/order/entities/Order';
 import { OrderProcess } from 'src/application/order/entities/OrderProcess';
@@ -13,6 +12,7 @@ import { OrderEntity } from './Order.entity';
 import { OrderItemEntity } from './OrderItem.entity';
 import { CreateOrderDto } from '../dto/create-order.dto';
 import { OrderItem } from 'src/application/order/entities/OrderItems';
+import { CustomerEntity } from 'src/adapters/custumer/gateway/Customer.entity';
 
 export class OrderGateway implements IOrderData {
   constructor(

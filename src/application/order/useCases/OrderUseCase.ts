@@ -8,7 +8,7 @@ import { IOrderData } from '../interfaces/IOrderData';
 import { IOrderUseCase } from '../interfaces/IOrderUseCase';
 import { OrderItem } from '../entities/OrderItems';
 import { IProductData } from 'src/application/product/interfaces/IProductData';
-import { ICustomerUseCase } from 'src/application/custumer/interfaces/ICustomerUseCase';
+import { ICustomerUseCase } from 'src/application/customer/interfaces/ICustomerUseCase';
 
 @Injectable()
 export class OrderUseCase implements IOrderUseCase {

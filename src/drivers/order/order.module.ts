@@ -6,15 +6,15 @@ import { IOrderData } from 'src/application/order/interfaces/IOrderData';
 import { IOrderUseCase } from 'src/application/order/interfaces/IOrderUseCase';
 import { OrderUseCase } from 'src/application/order/useCases/OrderUseCase';
 import { CategoryModule } from 'src/drivers/category/category.module';
-import { CustomerModule } from 'src/drivers/customer/custumer.module';
 import { ProductModule } from 'src/drivers/product/product.module';
 import { CategoryEntity } from '../../adapters/category/gateway/Category.entity';
-import { CustomerEntity } from '../../adapters/custumer/gateway/Customer.entity';
 import { OrderEntity } from '../../adapters/order/gateway/Order.entity';
 import { OrderItemEntity } from '../../adapters/order/gateway/OrderItem.entity';
 import { ProductEntity } from '../../adapters/product/gateway/Product.entity';
 import { OrderController } from './order.controller';
 import { OrderPresenter } from 'src/adapters/order/presenter/OrderPresenter';
+import { CustomerEntity } from 'src/adapters/custumer/gateway/Customer.entity';
+import { CustomerModule } from '../customer/customer.module';
 
 @Module({
   imports: [

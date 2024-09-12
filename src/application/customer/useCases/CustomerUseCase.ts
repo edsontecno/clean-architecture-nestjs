@@ -13,7 +13,7 @@ export class CustomerUseCase extends Service implements ICustomerUseCase {
     super();
   }
 
-  async saveCustomer(customer: Customer): Promise<void> {
+  async saveCustomer(customer: Customer): Promise<Customer> {
     this.validarRegrasCustomer(customer);
 
     const customerPesquisado = await this.getCustomer(customer.cpf);
@@ -22,7 +22,7 @@ export class CustomerUseCase extends Service implements ICustomerUseCase {
       throw new BusinessRuleException('CPF já cadastrado na base de dados');
     }
 
-    await this.persist.saveCustomer(customer);
+    return await this.persist.saveCustomer(customer);
   }
 
   private validarRegrasCustomer(customer: Customer) {

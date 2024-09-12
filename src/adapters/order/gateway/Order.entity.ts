@@ -1,5 +1,4 @@
 import { OrderStatus } from 'src/application/order/entities/OrderStatus';
-import { CustomerEntity } from '../../custumer/gateway/Customer.entity';
 import {
   Column,
   CreateDateColumn,
@@ -11,6 +10,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { OrderItemEntity } from './OrderItem.entity';
+import { CustomerEntity } from 'src/adapters/custumer/gateway/Customer.entity';
 
 @Entity({ name: 'pedidos' })
 export class OrderEntity {

@@ -18,11 +18,11 @@ import {
 } from '@nestjs/swagger';
 import { ErrorResponseBody } from 'src/system/filtros/filter-exception-global';
 import { Response } from 'express';
-import { CustumerAdapterController } from 'src/adapters/custumer/controller/CustumerAdapterController';
-import { CustomerDTO } from '../../adapters/custumer/dto/CustomerDto';
-import { Customer } from 'src/application/custumer/entities/Customer';
+import { Customer } from 'src/application/customer/entities/Customer';
+import { CustomerAdapterController } from 'src/adapters/custumer/controller/CustumerAdapterController';
+import { CustomerDTO } from 'src/adapters/custumer/dto/CustomerDto';
 
-@Controller('custumer')
+@Controller('customer')
 @ApiTags('Cliente')
 @ApiBadRequestResponse({
   description: 'Detalhe do erro',
@@ -30,7 +30,7 @@ import { Customer } from 'src/application/custumer/entities/Customer';
 })
 @ApiInternalServerErrorResponse({ description: 'Erro do servidor' })
 export class CustomerController {
-  constructor(private readonly adapter: CustumerAdapterController) {}
+  constructor(private readonly adapter: CustomerAdapterController) {}
   @Post()
   @ApiOperation({ summary: 'Criar cliente' })
   @ApiResponse({
@@ -39,7 +39,7 @@ export class CustomerController {
   })
   @ApiInternalServerErrorResponse({ description: 'Erro interno no servidor' })
   async saveCustomer(@Body() dadosDoUsuario: CustomerDTO) {
-    await this.adapter.saveCustomer(dadosDoUsuario);
+    return await this.adapter.saveCustomer(dadosDoUsuario);
   }
 
   @Get(':cpf')
