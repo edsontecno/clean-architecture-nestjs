@@ -11,7 +11,7 @@ export class CategoryUseCase extends Service implements ICategoryUseCase {
     super();
   }
 
-  save(category: Category): Promise<number> {
+  save(category: Category): Promise<Category> {
     this.checkFields(category);
     return this.persist.save(category);
   }
@@ -23,6 +23,9 @@ export class CategoryUseCase extends Service implements ICategoryUseCase {
 
   async get(id: number): Promise<Category> {
     const category = await this.persist.get(id);
+    // if (!category) {
+    //   throw new Error('Categoria não localizada');
+    // }
     this.checkField(
       category.id,
       'Não foi possível encontrar a categoria informada',
@@ -31,6 +34,9 @@ export class CategoryUseCase extends Service implements ICategoryUseCase {
   }
   async getSigle(id: number): Promise<Category> {
     const category = await this.persist.getSigle(id);
+    // if (!category) {
+    //   throw new BusinessRuleException('Categoria não localizada');
+    // }
     this.checkField(
       category.id,
       'Não foi possível encontrar a categoria informada',

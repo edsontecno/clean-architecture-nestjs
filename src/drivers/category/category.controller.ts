@@ -18,7 +18,6 @@ import {
 } from '@nestjs/swagger';
 import { Response } from 'express';
 import { CategoryAdapterController } from 'src/adapters/category/controller/CategoryAdapterController';
-import { Category } from 'src/application/category/entites/Category';
 import { ErrorResponseBody } from 'src/system/filtros/filter-exception-global';
 import { CategoryDto } from '../../adapters/category/dto/category.dto';
 import { CreateCategoryDto } from '../../adapters/category/dto/create-category.dto';
@@ -38,9 +37,10 @@ export class CategoryController {
   @ApiResponse({
     status: 201,
     description: 'Cadastro de categoria',
+    type: CategoryDto,
   })
   async create(@Body() createCategoryDto: CreateCategoryDto) {
-    await this.adapter.save(createCategoryDto);
+    return await this.adapter.save(createCategoryDto);
   }
 
   @Get(':id')
@@ -65,9 +65,7 @@ export class CategoryController {
     @Param('id') id: number,
     @Body() updateCategoryDto: CreateCategoryDto,
   ) {
-    const category = new Category();
-    Object.assign(category, updateCategoryDto);
-    return this.adapter.update(id, category);
+    return this.adapter.update(id, updateCategoryDto);
   }
 
   @Delete(':id')

@@ -1,9 +1,11 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { CategoryEntity } from './Category.entity';
 import { Category } from 'src/application/category/entites/Category';
 import { ICategoryData } from 'src/application/category/interfaces/ICategoryData';
+import { Product } from 'src/application/product/entities/Product';
+import { BusinessRuleException } from 'src/system/filtros/business-rule-exception';
+import { Repository } from 'typeorm';
 import { CreateCategoryDto } from '../dto/create-category.dto';
+import { CategoryEntity } from './Category.entity';
 
 export class CategoryGateway implements ICategoryData {
   constructor(
@@ -11,10 +13,10 @@ export class CategoryGateway implements ICategoryData {
     private readonly repository: Repository<CategoryEntity>,
   ) {}
 
-  async save(category: Category): Promise<number> {
-    const entity = this.convertDataToEntity(category);
+  async save(category: Category): Promise<Category> {
+    const entity = this.convertEntityTodata(category);
     await this.repository.save(entity);
-    return entity.id;
+    return this.convertDataToEntity(entity);
   }
 
   async get(id: number): Promise<Category> {
@@ -24,18 +26,25 @@ export class CategoryGateway implements ICategoryData {
       },
       relations: ['products'],
     });
-    const category = this.converteDataToEntity(categoryEntity);
+    if (!categoryEntity) {
+      throw new BusinessRuleException('Categoria não localizada');
+    }
+    const category = this.convertDataToEntity(categoryEntity);
     return category;
   }
 
   async getSigle(id: number): Promise<Category> {
     const categoryEntity = await this.getCategoryEntity(id);
-    const category = this.converteDataToEntity(categoryEntity);
+    const category = this.convertDataToEntity(categoryEntity);
     return category;
   }
 
   private async getCategoryEntity(id: number) {
-    return await this.repository.findOneBy({ id });
+    const entity = await this.repository.findOneBy({ id });
+    if (!entity) {
+      throw new BusinessRuleException('Categoria não localizada');
+    }
+    return entity;
   }
 
   async delete(id: number): Promise<void> {
@@ -45,27 +54,50 @@ export class CategoryGateway implements ICategoryData {
 
   async update(id: number, category: Category): Promise<Category> {
     const entity = await this.getCategoryEntity(id);
-    Object.assign(entity, category);
+    entity.name = category.name;
+    entity.description = category.description;
     await this.repository.save(entity);
-    const categoryResult = this.converteDataToEntity(entity);
+    const categoryResult = this.convertDataToEntity(entity);
     return categoryResult;
   }
 
-  private convertDataToEntity(category: Category) {
+  private convertEntityTodata(category: Category) {
     const entity = new CategoryEntity();
-    Object.assign(entity, category);
+    entity.name = category.name;
+    entity.description = category.description;
     return entity;
   }
 
-  private converteDataToEntity(categoryEntity: CategoryEntity): Category {
-    const category = new Category();
-    Object.assign(category, categoryEntity);
+  private convertDataToEntity(categoryEntity: CategoryEntity): Category {
+    if (!categoryEntity) {
+      return null;
+    }
+    const produts = [];
+    if (categoryEntity.products) {
+      categoryEntity.products.forEach((product) => {
+        produts.push(
+          new Product(
+            product.id,
+            product.name,
+            product.description,
+            product.price,
+            product.image,
+            product.category.id,
+          ),
+        );
+      });
+    }
+    const category = new Category(
+      categoryEntity.id,
+      categoryEntity.name,
+      categoryEntity.description,
+      produts,
+    );
     return category;
   }
 
   convertCreateDtoToEntity(dto: CreateCategoryDto): Category {
-    const category = new Category();
-    Object.assign(category, dto);
+    const category = new Category(null, dto.name, dto.description, null);
     return category;
   }
 }

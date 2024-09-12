@@ -1,8 +1,20 @@
 import { Product } from 'src/application/product/entities/Product';
 
 export class Category {
-  readonly id: string;
-  readonly name: string;
-  readonly description: string;
-  readonly products: Product[];
+  id: number;
+  name: string;
+  description: string;
+  products: Product[];
+
+  constructor(
+    id: number,
+    name: string,
+    description: string,
+    produts: Product[],
+  ) {
+    this.id = id;
+    this.name = name;
+    this.description = description;
+    this.products = produts;
+  }
 }

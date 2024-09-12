@@ -3,6 +3,7 @@ import { CreateOrderDto } from 'src/adapters/order/dto/create-order.dto';
 import { IOrderData } from 'src/application/order/interfaces/IOrderData';
 import { IOrderUseCase } from 'src/application/order/interfaces/IOrderUseCase';
 import { OrderPresenter } from '../presenter/OrderPresenter';
+import { ResponseOrderDTO } from '../dto/response-order.dto';
 
 @Injectable()
 export class OrderAdapterController {
@@ -12,9 +13,10 @@ export class OrderAdapterController {
     private presenter: OrderPresenter,
   ) {}
 
-  async save(orderDto: CreateOrderDto) {
+  async save(orderDto: CreateOrderDto): Promise<number> {
     const order = this.gateway.convertDtoToEntity(orderDto);
-    return await this.useCase.save(order);
+    const savedOrder = await this.useCase.save(order);
+    return savedOrder.id;
   }
 
   async getAllByStatus(status: string) {
@@ -27,8 +29,9 @@ export class OrderAdapterController {
     return this.presenter.convertArrayEntityToArrayResponseDto(orders);
   }
 
-  async changeStatus(id: string, status: string) {
-    return await this.useCase.changeStatus(id, status);
+  async changeStatus(id: string, status: string): Promise<ResponseOrderDTO> {
+    const order = await this.useCase.changeStatus(id, status);
+    return this.presenter.convertEntityToResponseDto(order);
   }
 
   async getListStatus() {

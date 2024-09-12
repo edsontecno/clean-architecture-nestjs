@@ -17,11 +17,10 @@ import {
 } from '@nestjs/swagger';
 import { Response } from 'express';
 import { OrderAdapterController } from 'src/adapters/order/controller/OrderAdapterController';
+import { ResponseOrderDTO } from 'src/adapters/order/dto/response-order.dto';
 import { Order } from 'src/application/order/entities/Order';
-import { MessageDTO } from 'src/system/dto/message.dto';
 import { ErrorResponseBody } from 'src/system/filtros/filter-exception-global';
 import { CreateOrderDto } from '../../adapters/order/dto/create-order.dto';
-import { OrderDto } from '../../adapters/order/dto/order.dto';
 
 @ApiTags('Pedidos')
 @ApiBadRequestResponse({
@@ -50,7 +49,7 @@ export class OrderController {
   @ApiResponse({
     status: 200,
     description: 'Lista de pedidos em andamento',
-    type: [OrderDto],
+    type: [ResponseOrderDTO],
   })
   getOrders() {
     return this.adapter.getOrders();
@@ -72,7 +71,7 @@ export class OrderController {
   @ApiResponse({
     status: 200,
     description: 'Lista de pedidos por status',
-    type: [OrderDto],
+    type: [ResponseOrderDTO],
   })
   getAll(@Param('status') status: string) {
     return this.adapter.getAllByStatus(status);
@@ -83,18 +82,18 @@ export class OrderController {
   @ApiResponse({
     status: 200,
     description: 'Consultar pedido por id',
-    type: OrderDto,
+    type: ResponseOrderDTO,
   })
   findOne(@Param('id') id: number) {
     return this.adapter.getById(id);
   }
 
   @Get(':id/status')
-  @ApiOperation({ summary: 'Consultar pedido por id' })
+  @ApiOperation({ summary: 'Consultar pedido por status' })
   @ApiResponse({
     status: 200,
-    description: 'Consultar pedido por id',
-    type: OrderDto,
+    description: 'Consultar pedido por status',
+    type: String,
   })
   findStatusOrder(@Param('id') id: number) {
     return this.adapter.findStatusOrder(id);
@@ -105,7 +104,7 @@ export class OrderController {
   @ApiResponse({
     status: 200,
     description: 'Lista de pedidos por customer',
-    type: [OrderDto],
+    type: [ResponseOrderDTO],
   })
   getOrderByCustomer(@Param('cpf') cpf: string) {
     return this.adapter.getOrderByCustomer(cpf);
@@ -116,7 +115,7 @@ export class OrderController {
   @ApiResponse({
     status: 200,
     description: 'Lista de pedidos por status',
-    type: MessageDTO,
+    type: ResponseOrderDTO,
   })
   async changeStatus(
     @Param('id') id: string,
@@ -124,8 +123,6 @@ export class OrderController {
     @Res() response: Response,
   ) {
     const result = await this.adapter.changeStatus(id, status);
-    return response.status(HttpStatus.OK).json({
-      message: result,
-    });
+    return response.status(HttpStatus.OK).json(result);
   }
 }

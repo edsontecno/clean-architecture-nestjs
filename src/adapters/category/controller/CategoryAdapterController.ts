@@ -11,7 +11,7 @@ export class CategoryAdapterController {
     private gateway: ICategoryData,
   ) {}
 
-  save(createCategoryDto: CreateCategoryDto): Promise<number> {
+  save(createCategoryDto: CreateCategoryDto): Promise<Category> {
     const category = this.gateway.convertCreateDtoToEntity(createCategoryDto);
     return this.useCase.save(category);
   }
@@ -27,7 +27,8 @@ export class CategoryAdapterController {
     return this.useCase.delete(id);
   }
 
-  update(id: number, category: Category): Promise<Category> {
+  update(id: number, dto: CreateCategoryDto): Promise<Category> {
+    const category = this.gateway.convertCreateDtoToEntity(dto);
     return this.useCase.update(id, category);
   }
 }

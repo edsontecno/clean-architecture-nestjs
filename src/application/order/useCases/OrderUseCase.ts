@@ -18,7 +18,7 @@ export class OrderUseCase implements IOrderUseCase {
     private customerUseCase: ICustomerUseCase,
   ) {}
 
-  async save(order: Order): Promise<number> {
+  async save(order: Order): Promise<Order> {
     const orderProcess = new OrderProcess();
 
     if (order.customerId) {
@@ -40,10 +40,10 @@ export class OrderUseCase implements IOrderUseCase {
 
     await this.prepareItems(order, orderProcess);
 
-    const orderId = await this.persist.save(orderProcess);
-    this.processPayment(orderId);
+    const orderSaved = await this.persist.save(orderProcess);
+    this.processPayment(orderSaved.id);
 
-    return orderId;
+    return orderSaved;
   }
 
   private async prepareItems(order: Order, orderProcessado: OrderProcess) {
@@ -99,7 +99,7 @@ export class OrderUseCase implements IOrderUseCase {
     console.log('Processando pagamento....');
     await this.awaitPayment();
     console.log('Pagamento processado');
-    this.persist.changeOrderStatus(orderId, OrderStatus.Received);
+    this.persist.changeStatus(orderId, OrderStatus.Received);
   }
 
   awaitPayment() {
@@ -127,13 +127,12 @@ export class OrderUseCase implements IOrderUseCase {
     return statusPossiveis.includes(novoStatus);
   }
 
-  async changeStatus(id: number, status: OrderStatus) {
+  async changeStatus(id: number, status: OrderStatus): Promise<Order> {
     const order = await this.getById(id);
     if (!this.checkTransactionStatus(order.status, status)) {
       throw new BusinessRuleException('Transição de status inválida');
     }
-    await this.persist.changeStatus(id, status);
-    return 'Pedido alterado com sucesso';
+    return await this.persist.changeStatus(id, status);
   }
 
   async getById(id: number): Promise<Order> {

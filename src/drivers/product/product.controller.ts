@@ -39,7 +39,14 @@ export class ProductController {
     description: 'produto salvo',
   })
   async create(@Body() productDto: CreateProductDto) {
-    const product = new Product();
+    const product = new Product(
+      null,
+      productDto.name,
+      productDto.description,
+      productDto.price,
+      productDto.image,
+      productDto.category,
+    );
     Object.assign(product, productDto);
     await this.adapter.save(product);
   }
@@ -74,8 +81,15 @@ export class ProductController {
     type: CreateProductDto,
   })
   update(@Param('id') id: number, @Body() productDto: CreateProductDto) {
-    const product = new Product();
-    Object.assign(product, productDto);
+    const product = new Product(
+      id,
+      productDto.name,
+      productDto.description,
+      productDto.image,
+      productDto.price,
+      productDto.category,
+    );
+    // Object.assign(product, productDto);
     return this.adapter.update(id, product);
   }
 

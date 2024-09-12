@@ -20,7 +20,7 @@ export class OrderGateway implements IOrderData {
     private readonly repository: Repository<OrderEntity>,
   ) {}
 
-  async save(order: OrderProcess): Promise<number> {
+  async save(order: OrderProcess): Promise<Order> {
     const entity = new OrderEntity();
     entity.customer = new CustomerEntity();
     entity.customer.id = order.customerId;
@@ -36,14 +36,15 @@ export class OrderGateway implements IOrderData {
     Object.assign(entity, order);
 
     await this.repository.save(entity);
-    return entity.id;
+
+    return this.convertDataToEntity(entity);
   }
 
-  async changeOrderStatus(id: number, status: OrderStatus) {
-    const order = await this.repository.findOneBy({ id });
-    order.status = status;
-    await this.repository.save(order);
-  }
+  // async changeOrderStatus(id: number, status: OrderStatus) {
+  //   const order = await this.repository.findOneBy({ id });
+  //   order.status = status;
+  //   await this.repository.save(order);
+  // }
 
   async getAllByStatus(status: OrderStatus): Promise<Order[]> {
     const ordersEntity = await this.repository.find({
@@ -56,11 +57,11 @@ export class OrderGateway implements IOrderData {
     }
     return orders;
   }
-  async changeStatus(id: number, status: OrderStatus) {
+  async changeStatus(id: number, status: OrderStatus): Promise<Order> {
     const order = await this.repository.findOneBy({ id });
     order.status = status;
     await this.repository.save(order);
-    return '';
+    return this.convertDataToEntity(order);
   }
 
   async getOrdersByCustomer(cpf: string): Promise<Order[]> {

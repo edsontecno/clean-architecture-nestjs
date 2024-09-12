@@ -19,8 +19,15 @@ export class ProductGateway implements IProductData {
   }
   async get(id: number): Promise<Product> {
     const entity = await this.repository.findOneBy({ id });
-    const product = new Product();
-    Object.assign(product, entity);
+    const product = new Product(
+      entity.id,
+      entity.name,
+      entity.description,
+      entity.price,
+      entity.image,
+      entity.category,
+    );
+    // Object.assign(product, entity);
     return product;
   }
   getEntity(id: number): Promise<ProductEntity> {
@@ -51,16 +58,29 @@ export class ProductGateway implements IProductData {
       where: { category: { id: idCategory } },
     });
     list.forEach((element) => {
-      const newProduct = new Product();
-      Object.assign(newProduct, element);
+      const newProduct = new Product(
+        element.id,
+        element.name,
+        element.description,
+        element.price,
+        element.image,
+        element.category,
+      );
+      // Object.assign(newProduct, element);
       result.push(newProduct);
     });
     return result;
   }
 
   convertDtoToEntity(dto: CreateProductDto): Product {
-    const product = new Product();
-    Object.assign(product, dto);
+    const product = new Product(
+      null,
+      dto.name,
+      dto.description,
+      dto.price,
+      dto.image,
+      dto.category,
+    );
     return product;
   }
 }

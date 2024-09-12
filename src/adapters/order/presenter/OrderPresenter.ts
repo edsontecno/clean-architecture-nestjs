@@ -34,4 +34,8 @@ export class OrderPresenter {
 
     return newArray;
   }
+
+  returnIdOfEntity(order: Order): number {
+    return order.id;
+  }
 }
