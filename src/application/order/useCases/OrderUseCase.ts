@@ -18,12 +18,11 @@ export class OrderUseCase implements IOrderUseCase {
     private customerUseCase: ICustomerUseCase,
   ) {}
 
-  async save(order: Order): Promise<number> {
+  async save(order: Order): Promise<object> {
     const orderProcess = new OrderProcess();
-
     if (order.customerId) {
       const customer = await this.customerUseCase.getCustomer(order.customerId);
-
+  
       if (customer.id === undefined) {
         throw new BusinessRuleException(
           'Cliente informado não existe na base de dados',
@@ -31,19 +30,19 @@ export class OrderUseCase implements IOrderUseCase {
       }
       orderProcess.customerId = customer.id;
     }
-
+  
     if (order.items.length < 1) {
       throw new BusinessRuleException(
         'Nenhum produto foi adicionado ao pedido',
       );
     }
-
+  
     await this.prepareItems(order, orderProcess);
-
+  
     const orderId = await this.persist.save(orderProcess);
-    this.processPayment(orderId);
-
-    return orderId;
+    const qrCode = this.processPayment(orderId);
+  
+    return qrCode;
   }
 
   private async prepareItems(order: Order, orderProcessado: OrderProcess) {
@@ -95,19 +94,16 @@ export class OrderUseCase implements IOrderUseCase {
     }
   }
 
-  async processPayment(orderId: number) {
+  async processPayment(orderId: number): Promise<object> {
     console.log('Processando pagamento....');
-    await this.awaitPayment();
-    console.log('Pagamento processado');
-    this.persist.changeOrderStatus(orderId, OrderStatus.Received);
+    const qrCode = await this.awaitPayment();
+  
+    return { order_id: orderId, qrCode }; 
   }
 
   awaitPayment() {
-    return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        resolve();
-      }, 30000);
-    });
+    const urlQrCode = 'https://www.mercadopago.com/instore/merchant/qr/104298854/1355be1ba3e441db806671925213e14ec595b7892e8a46268407fd4e1ab608cc.png';
+    return urlQrCode;
   }
 
   private statusPermitidos = {
