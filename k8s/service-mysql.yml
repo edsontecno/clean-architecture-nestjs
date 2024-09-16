@@ -1,0 +1,13 @@
+apiVersion: v1                     # Versão da API para o Service
+kind: Service                      # Tipo de recurso (Service)
+metadata:
+  name: tech-challenge02-mysql-service                   # Nome do Service para o banco de dados MySQL
+spec:
+  selector:
+    app: tech-challenge02-mysql-db                  # Seleciona os pods com a label "mysql-db"
+  ports:
+    - protocol: TCP                # Protocolo de comunicação
+      port: 3306                   # Porta exposta pelo Service
+      targetPort: 3306             # Porta do contêiner MySQL onde o tráfego será redirecionado
+  type: ClusterIP                  # O serviço será acessível apenas dentro do cluster (uso interno)
+

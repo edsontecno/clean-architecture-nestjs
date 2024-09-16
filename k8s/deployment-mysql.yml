@@ -1,0 +1,31 @@
+apiVersion: apps/v1                # Especifica a versão da API para o Deployment
+kind: Deployment                   # Tipo de recurso (Deployment)
+metadata:
+  name: mysql-db                   # Nome do Deployment para o MySQL
+spec:
+  replicas: 1                      # Número de réplicas, já que geralmente 1 instância de banco de dados é suficiente
+  selector:
+    matchLabels:
+      app: mysql-db                # Label para identificar o pod do MySQL
+  template:
+    metadata:
+      labels:
+        app: mysql-db              # Label que será usado nos pods criados pelo Deployment
+    spec:
+      containers:
+        - name: mysql                # Nome do contêiner
+          image: mysql:5.7           # Imagem do MySQL, neste caso, versão 5.7
+          env:
+            - name: MYSQL_DATABASE     # Variável de ambiente que define o nome do banco de dados
+              value: lanchonete
+            - name: MYSQL_ROOT_PASSWORD # Define a senha de root
+              value: password
+          ports:
+            - containerPort: 3306      # Porta usada pelo MySQL dentro do contêiner
+          volumeMounts:
+            - mountPath: /var/lib/mysql # Monta o volume persistente dentro do contêiner
+              name: mysql-storage
+      volumes:
+        - name: mysql-storage        # Define o volume para armazenar os dados do banco de dados
+          persistentVolumeClaim:
+            claimName: mysql-pvc     # Faz referência ao PersistentVolumeClaim

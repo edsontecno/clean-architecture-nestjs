@@ -1,0 +1,13 @@
+apiVersion: v1                     # Versão da API para o Service
+kind: Service                      # Tipo de recurso (Service)
+metadata:
+  name: tech-challenge02-service        # Nome do Service para a aplicação Spring Boot
+spec:
+  selector:
+    app: tech-challenge02-app           # Label para selecionar os pods do Spring Boot
+  ports:
+    - protocol: TCP                # Protocolo de comunicação
+      port: 8081                   # Porta exposta pelo Service
+      targetPort: 8080             # Porta do contêiner para onde o tráfego será redirecionado
+  type: LoadBalancer               # Tipo de Service, expõe o serviço externamente (quando suportado)
+
