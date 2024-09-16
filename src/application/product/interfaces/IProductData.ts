@@ -2,7 +2,7 @@ import { CreateProductDto } from 'src/adapters/product/dto/create-product.dto';
 import { Product } from '../entities/Product';
 
 export abstract class IProductData {
-  abstract save(product: Product): Promise<number>;
+  abstract save(product: Product): Promise<Product>;
   abstract get(id: number): Promise<Product>;
   abstract delete(id: number): Promise<void>;
   abstract update(id: number, product: Product): Promise<Product>;

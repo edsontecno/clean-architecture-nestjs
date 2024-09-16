@@ -5,6 +5,7 @@ import { CategoryInput } from '.';
 import { CategoryEntity } from '../../adapters/category/gateway/Category.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CategoryAdapterController } from 'src/adapters/category/controller/CategoryAdapterController';
+import { GategoryPresenter } from 'src/adapters/category/presenter/CategoryPresenter';
 
 @Module({
   imports: [TypeOrmModule.forFeature([CategoryEntity])],
@@ -15,6 +16,10 @@ import { CategoryAdapterController } from 'src/adapters/category/controller/Cate
     {
       provide: CategoryAdapterController,
       useClass: CategoryAdapterController,
+    },
+    {
+      provide: GategoryPresenter,
+      useClass: GategoryPresenter,
     },
   ],
   exports: [...CategoryOutput, ...CategoryInput],

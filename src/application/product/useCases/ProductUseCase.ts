@@ -19,7 +19,7 @@ export class ProductUseCase extends Service implements IProductUseCase {
     return this.persist.findAllByCategory(idCategory);
   }
 
-  async save(product: Product): Promise<number> {
+  async save(product: Product): Promise<Product> {
     await this.checkFields(product);
     return this.persist.save(product);
   }

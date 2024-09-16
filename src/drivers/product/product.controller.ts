@@ -1,16 +1,14 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-  Res,
+  Get,
   HttpStatus,
+  Param,
+  Patch,
+  Post,
+  Res,
 } from '@nestjs/common';
-import { Product } from 'src/application/product/entities/Product';
-import { IProductUseCase } from 'src/application/product/interfaces/IProductUseCase';
 import {
   ApiBadRequestResponse,
   ApiInternalServerErrorResponse,
@@ -18,8 +16,10 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { ErrorResponseBody } from 'src/system/filtros/filter-exception-global';
 import { Response } from 'express';
+import { ProductAdapterController } from 'src/adapters/product/controller/ProductAdapterController';
+import { Product } from 'src/application/product/entities/Product';
+import { ErrorResponseBody } from 'src/system/filtros/filter-exception-global';
 import { CreateProductDto } from '../../adapters/product/dto/create-product.dto';
 
 @Controller('product')
@@ -30,7 +30,7 @@ import { CreateProductDto } from '../../adapters/product/dto/create-product.dto'
 })
 @ApiInternalServerErrorResponse({ description: 'Erro do servidor' })
 export class ProductController {
-  constructor(private readonly adapter: IProductUseCase) {}
+  constructor(private readonly adapter: ProductAdapterController) {}
 
   @Post()
   @ApiOperation({ summary: 'Cadastrar produto' })
@@ -48,7 +48,7 @@ export class ProductController {
       productDto.category,
     );
     Object.assign(product, productDto);
-    await this.adapter.save(product);
+    return await this.adapter.create(product);
   }
 
   @Get(':id')
@@ -59,7 +59,7 @@ export class ProductController {
     type: CreateProductDto,
   })
   findOne(@Param('id') id: number) {
-    return this.adapter.get(id);
+    return this.adapter.findOne(id);
   }
 
   @Get('/category/:id')
@@ -81,16 +81,16 @@ export class ProductController {
     type: CreateProductDto,
   })
   update(@Param('id') id: number, @Body() productDto: CreateProductDto) {
-    const product = new Product(
-      id,
-      productDto.name,
-      productDto.description,
-      productDto.image,
-      productDto.price,
-      productDto.category,
-    );
+    // const product = new Product(
+    //   id,
+    //   productDto.name,
+    //   productDto.description,
+    //   productDto.image,
+    //   productDto.price,
+    //   productDto.category,
+    // );
     // Object.assign(product, productDto);
-    return this.adapter.update(id, product);
+    return this.adapter.update(id, productDto);
   }
 
   @Delete(':id')
@@ -100,7 +100,7 @@ export class ProductController {
     description: 'Excluir produto por id',
   })
   async remove(@Param('id') id: number, @Res() response: Response) {
-    await this.adapter.delete(id);
+    await this.adapter.remove(id);
     return response.status(HttpStatus.NO_CONTENT).json();
   }
 }

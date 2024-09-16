@@ -1,8 +1,8 @@
+import { ProductEntity } from 'src/adapters/product/gateway/Product.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IProductData } from 'src/application/product/interfaces/IProductData';
 import { QueryFailedError, Repository } from 'typeorm';
 import { Product } from 'src/application/product/entities/Product';
-import { ProductEntity } from './Product.entity';
 import { CreateProductDto } from '../dto/create-product.dto';
 
 export class ProductGateway implements IProductData {
@@ -11,28 +11,21 @@ export class ProductGateway implements IProductData {
     private readonly repository: Repository<ProductEntity>,
   ) {}
 
-  async save(product: Product): Promise<number> {
+  async save(product: Product): Promise<Product> {
     const entity = new ProductEntity();
     Object.assign(entity, product);
     await this.repository.save(entity);
-    return entity.id;
+    return this.convertDataToEntity(entity);
   }
   async get(id: number): Promise<Product> {
     const entity = await this.repository.findOneBy({ id });
-    const product = new Product(
-      entity.id,
-      entity.name,
-      entity.description,
-      entity.price,
-      entity.image,
-      entity.category,
-    );
-    // Object.assign(product, entity);
-    return product;
+    return this.convertDataToEntity(entity);
   }
-  getEntity(id: number): Promise<ProductEntity> {
+
+  private getEntity(id: number): Promise<ProductEntity> {
     return this.repository.findOneBy({ id });
   }
+
   async delete(id: number): Promise<void> {
     try {
       const entity = await this.getEntity(id);
@@ -49,8 +42,9 @@ export class ProductGateway implements IProductData {
   async update(id: number, product: Product): Promise<Product> {
     const entity = await this.getEntity(id);
     Object.assign(entity, product);
+    entity.id = parseInt(id.toString());
     await this.repository.save(entity);
-    return product;
+    return this.convertDataToEntity(entity);
   }
   async findAllByCategory(idCategory: number): Promise<Product[]> {
     const result = [];
@@ -66,7 +60,6 @@ export class ProductGateway implements IProductData {
         element.image,
         element.category,
       );
-      // Object.assign(newProduct, element);
       result.push(newProduct);
     });
     return result;
@@ -82,5 +75,20 @@ export class ProductGateway implements IProductData {
       dto.category,
     );
     return product;
+  }
+
+  private convertDataToEntity(productEntity: ProductEntity): Product {
+    if (!productEntity) {
+      return null;
+    }
+    const category = new Product(
+      productEntity.id,
+      productEntity.name,
+      productEntity.description,
+      productEntity.price,
+      productEntity.image,
+      productEntity.category,
+    );
+    return category;
   }
 }

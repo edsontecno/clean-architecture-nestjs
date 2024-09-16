@@ -67,7 +67,7 @@ export class OrderUseCase implements IOrderUseCase {
       const newItem = new OrderItem();
       newItem.productId = element.productId;
       newItem.amount = element.amount;
-      newItem.salePrice = parseFloat(product.price) * element.amount;
+      newItem.salePrice = parseFloat(product.price.toString()) * element.amount;
       orderProcessado.items.push(newItem);
       orderProcessado.total += newItem.salePrice;
     }

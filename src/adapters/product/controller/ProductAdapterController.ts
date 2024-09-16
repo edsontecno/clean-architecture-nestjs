@@ -2,17 +2,20 @@ import { Injectable } from '@nestjs/common';
 import { IProductData } from 'src/application/product/interfaces/IProductData';
 import { IProductUseCase } from 'src/application/product/interfaces/IProductUseCase';
 import { CreateProductDto } from '../dto/create-product.dto';
+import { ProdutctPresenter } from '../presenter/ProductPresenter';
 
 @Injectable()
 export class ProductAdapterController {
   constructor(
     private readonly useCase: IProductUseCase,
     private gateway: IProductData,
+    private presenter: ProdutctPresenter,
   ) {}
 
   async create(productDto: CreateProductDto) {
     const product = this.gateway.convertDtoToEntity(productDto);
-    await this.useCase.save(product);
+    const entity = await this.useCase.save(product);
+    return this.presenter.returnIdOfEntity(entity);
   }
 
   findOne(id: number) {

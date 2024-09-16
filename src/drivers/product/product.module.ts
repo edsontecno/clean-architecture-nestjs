@@ -10,6 +10,8 @@ import { IProductUseCase } from 'src/application/product/interfaces/IProductUseC
 import { ProductUseCase } from 'src/application/product/useCases/ProductUseCase';
 import { IProductData } from 'src/application/product/interfaces/IProductData';
 import { ProductGateway } from 'src/adapters/product/gateway/ProductGateway';
+import { ProductAdapterController } from 'src/adapters/product/controller/ProductAdapterController';
+import { ProdutctPresenter } from 'src/adapters/product/presenter/ProductPresenter';
 
 @Module({
   imports: [
@@ -35,6 +37,14 @@ import { ProductGateway } from 'src/adapters/product/gateway/ProductGateway';
     {
       provide: CategoryUseCase,
       useClass: CategoryUseCase,
+    },
+    {
+      provide: ProductAdapterController,
+      useClass: ProductAdapterController,
+    },
+    {
+      provide: ProdutctPresenter,
+      useClass: ProdutctPresenter,
     },
   ],
   exports: [
