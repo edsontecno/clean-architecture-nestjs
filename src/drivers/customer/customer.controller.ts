@@ -11,8 +11,11 @@ import {
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBody,
+  ApiCreatedResponse,
   ApiInternalServerErrorResponse,
   ApiOperation,
+  ApiParam,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -33,9 +36,29 @@ export class CustomerController {
   constructor(private readonly adapter: CustomerAdapterController) {}
   @Post()
   @ApiOperation({ summary: 'Criar cliente' })
-  @ApiResponse({
-    status: 201,
+  @ApiCreatedResponse({
     description: 'cliente salvo',
+  })
+  @ApiBody({
+    type: CustomerDTO,
+    examples: {
+      example1: {
+        summary: 'Cliente 1',
+        value: {
+          name: 'Fulano da Silva',
+          email: 'fulano@gmail.com',
+          cpf: '78750582364',
+        },
+      },
+      example2: {
+        summary: 'Cliente 2',
+        value: {
+          name: 'Ciclano da Silva',
+          email: 'Ciclano@gmail.com',
+          cpf: '90995528900',
+        },
+      },
+    },
   })
   @ApiInternalServerErrorResponse({ description: 'Erro interno no servidor' })
   async saveCustomer(@Body() dadosDoUsuario: CustomerDTO) {
@@ -49,6 +72,19 @@ export class CustomerController {
     description: 'Consultar cliente por cpf',
     type: Customer,
   })
+  @ApiParam({
+    name: 'cpf',
+    type: Number,
+    description: 'Consultar cliente',
+    examples: {
+      Fulano: {
+        value: '78750582364',
+      },
+      Ciclano: {
+        value: '90995528900',
+      },
+    },
+  })
   async getCustomerByCpf(@Param('cpf') cpf: string) {
     return await this.adapter.getCustomer(cpf);
   }
@@ -58,6 +94,19 @@ export class CustomerController {
   @ApiResponse({
     status: 204,
     description: 'Excluir cliente por cpf',
+  })
+  @ApiParam({
+    name: 'cpf',
+    type: Number,
+    description: 'Consultar cliente',
+    examples: {
+      Fulano: {
+        value: '78750582364',
+      },
+      Ciclano: {
+        value: '90995528900',
+      },
+    },
   })
   async deleteCustomerByCpf(
     @Param('cpf') cpf: string,
@@ -73,6 +122,38 @@ export class CustomerController {
     status: 200,
     description: 'Consultar cliente por cpf',
     type: Customer,
+  })
+  @ApiParam({
+    name: 'cpf',
+    type: Number,
+    description: 'Consultar cliente',
+    examples: {
+      Fulano: {
+        value: '78750582364',
+      },
+      Ciclano: {
+        value: '90995528900',
+      },
+    },
+  })
+  @ApiBody({
+    type: CustomerDTO,
+    examples: {
+      example1: {
+        summary: 'Cliente 1',
+        value: {
+          name: 'Fulano da Silva',
+          email: 'fulano@gmail.com',
+        },
+      },
+      example2: {
+        summary: 'Cliente 2',
+        value: {
+          name: 'Ciclano da Silva',
+          email: 'Ciclano@gmail.com',
+        },
+      },
+    },
   })
   async updateCustomerByCpf(
     @Param('cpf') cpf: string,

@@ -11,8 +11,11 @@ import {
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBody,
   ApiInternalServerErrorResponse,
+  ApiOkResponse,
   ApiOperation,
+  ApiParam,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -39,16 +42,47 @@ export class CategoryController {
     description: 'Cadastro de categoria',
     type: CategoryDto,
   })
+  @ApiBody({
+    type: CreateCategoryDto,
+    examples: {
+      example1: {
+        summary: 'Bebida',
+        value: {
+          name: 'Bebida',
+          description: 'Categoria para categorizar produtos do tipo bebida',
+        },
+      },
+      example2: {
+        summary: 'Sobremesa',
+        value: {
+          name: 'Sobremesa',
+          description: 'Categoria para categorizar produtos do tipo sobremesa.',
+        },
+      },
+    },
+  })
   async create(@Body() createCategoryDto: CreateCategoryDto) {
     return await this.adapter.save(createCategoryDto);
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Consultar categoria por id' })
-  @ApiResponse({
-    status: 200,
+  @ApiOkResponse({
     description: 'Consultar categoria por id',
     type: CategoryDto,
+  })
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    description: 'ID da categoria',
+    examples: {
+      Lanche: {
+        value: 1,
+      },
+      Acompanhamento: {
+        value: 2,
+      },
+    },
   })
   findOne(@Param('id') id: number) {
     return this.adapter.getSigle(id);
@@ -56,8 +90,39 @@ export class CategoryController {
 
   @Patch(':id')
   @ApiOperation({ summary: 'Atualizar categoria por id' })
-  @ApiResponse({
-    status: 200,
+  @ApiBody({
+    type: CreateCategoryDto,
+    examples: {
+      example1: {
+        summary: 'Bebida',
+        value: {
+          name: 'Bebida',
+          description: 'Categoria para categorizar produtos do tipo bebida',
+        },
+      },
+      example2: {
+        summary: 'Sobremesa',
+        value: {
+          name: 'Sobremesa',
+          description: 'Categoria para categorizar produtos do tipo sobremesa.',
+        },
+      },
+    },
+  })
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    description: 'ID da categoria',
+    examples: {
+      Lanche: {
+        value: 1,
+      },
+      Acompanhamento: {
+        value: 2,
+      },
+    },
+  })
+  @ApiOkResponse({
     description: 'Atualizar category por id',
     type: CategoryDto,
   })
@@ -73,6 +138,19 @@ export class CategoryController {
   @ApiResponse({
     status: 204,
     description: 'Excluir categoria por id',
+  })
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    description: 'ID da categoria',
+    examples: {
+      Lanche: {
+        value: 1,
+      },
+      Acompanhamento: {
+        value: 2,
+      },
+    },
   })
   async remove(@Param('id') id: number, @Res() response: Response) {
     await this.adapter.delete(id);

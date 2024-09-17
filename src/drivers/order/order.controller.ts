@@ -10,8 +10,12 @@ import {
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBody,
+  ApiCreatedResponse,
   ApiInternalServerErrorResponse,
+  ApiOkResponse,
   ApiOperation,
+  ApiParam,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -34,9 +38,37 @@ export class OrderController {
 
   @Post()
   @ApiOperation({ summary: 'Cadastrar pedidos' })
-  @ApiResponse({
-    status: 201,
+  @ApiCreatedResponse({
     description: 'Cadastrar pedidos',
+  })
+  @ApiBody({
+    type: CreateOrderDto,
+    examples: {
+      example1: {
+        summary: 'Ordem 1',
+        value: {
+          items: [
+            {
+              productId: 1,
+              amount: 1,
+            },
+          ],
+          customerId: '78750582364',
+        },
+      },
+      example2: {
+        summary: 'Ordem 2',
+        value: {
+          items: [
+            {
+              productId: 2,
+              amount: 5,
+            },
+          ],
+          customerId: '90995528900',
+        },
+      },
+    },
   })
   async save(@Body() orderDto: CreateOrderDto) {
     const order = new Order();
@@ -46,8 +78,7 @@ export class OrderController {
 
   @Get()
   @ApiOperation({ summary: 'Listar pedidos em andamento' })
-  @ApiResponse({
-    status: 200,
+  @ApiOkResponse({
     description: 'Lista de pedidos em andamento',
     type: [ResponseOrderDTO],
   })
@@ -57,8 +88,7 @@ export class OrderController {
 
   @Get('status')
   @ApiOperation({ summary: 'Listar todos os status disponíveis' })
-  @ApiResponse({
-    status: 200,
+  @ApiOkResponse({
     description: 'Lista de status disponíveis para o pedidos',
     type: [String],
   })
@@ -73,6 +103,21 @@ export class OrderController {
     description: 'Lista de pedidos por status',
     type: [ResponseOrderDTO],
   })
+  @ApiParam({
+    name: 'status',
+    type: String,
+    description: 'Consultar Produto',
+    examples: {
+      Status1: {
+        summary: 'Em preparação',
+        value: 'em preparação',
+      },
+      Status2: {
+        summary: 'Pronto',
+        value: 'pronto',
+      },
+    },
+  })
   getAll(@Param('status') status: string) {
     return this.adapter.getAllByStatus(status);
   }
@@ -83,6 +128,21 @@ export class OrderController {
     status: 200,
     description: 'Consultar pedido por id',
     type: ResponseOrderDTO,
+  })
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    description: 'Consultar pedido',
+    examples: {
+      Status1: {
+        summary: 'Pedido 1',
+        value: 1,
+      },
+      Status2: {
+        summary: 'Pedido 2',
+        value: 2,
+      },
+    },
   })
   findOne(@Param('id') id: number) {
     return this.adapter.getById(id);
@@ -95,16 +155,46 @@ export class OrderController {
     description: 'Consultar pedido por status',
     type: String,
   })
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    description: 'Consultar pedido',
+    examples: {
+      Status1: {
+        summary: 'Pedido 1',
+        value: 1,
+      },
+      Status2: {
+        summary: 'Pedido 2',
+        value: 2,
+      },
+    },
+  })
   findStatusOrder(@Param('id') id: number) {
     return this.adapter.findStatusOrder(id);
   }
 
   @Get('/customer/:cpf')
-  @ApiOperation({ summary: 'Listar pedidos de um customer' })
+  @ApiOperation({ summary: 'Listar pedidos de um cliente' })
   @ApiResponse({
     status: 200,
-    description: 'Lista de pedidos por customer',
+    description: 'Lista de pedidos por cliente',
     type: [ResponseOrderDTO],
+  })
+  @ApiParam({
+    name: 'cpf',
+    type: String,
+    description: 'Consultar pedido por cliente',
+    examples: {
+      Status1: {
+        summary: 'Fulano',
+        value: '78750582364',
+      },
+      Status2: {
+        summary: 'Ciclano',
+        value: '90995528900',
+      },
+    },
   })
   getOrderByCustomer(@Param('cpf') cpf: string) {
     return this.adapter.getOrderByCustomer(cpf);
@@ -116,6 +206,36 @@ export class OrderController {
     status: 200,
     description: 'Lista de pedidos por status',
     type: ResponseOrderDTO,
+  })
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    description: 'Consultar pedido',
+    examples: {
+      Status1: {
+        summary: 'Pedido 1',
+        value: 1,
+      },
+      Status2: {
+        summary: 'Pedido 2',
+        value: 2,
+      },
+    },
+  })
+  @ApiParam({
+    name: 'status',
+    type: String,
+    description: 'Consultar Produto',
+    examples: {
+      Status1: {
+        summary: 'Em preparação',
+        value: 'em preparação',
+      },
+      Status2: {
+        summary: 'Pronto',
+        value: 'pronto',
+      },
+    },
   })
   async changeStatus(
     @Param('id') id: string,

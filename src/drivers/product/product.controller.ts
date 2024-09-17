@@ -11,8 +11,10 @@ import {
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBody,
   ApiInternalServerErrorResponse,
   ApiOperation,
+  ApiParam,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -38,6 +40,31 @@ export class ProductController {
     status: 201,
     description: 'produto salvo',
   })
+  @ApiBody({
+    type: CreateProductDto,
+    examples: {
+      example1: {
+        summary: 'Produto 1',
+        value: {
+          name: 'Doce de leite',
+          description: 'Doce de leite da fazenda',
+          price: 5.99,
+          image: '',
+          category: 1,
+        },
+      },
+      example2: {
+        summary: 'Produto 2',
+        value: {
+          name: 'Batata frita',
+          description: 'Batata frita crocante',
+          price: 3.99,
+          image: '',
+          category: 1,
+        },
+      },
+    },
+  })
   async create(@Body() productDto: CreateProductDto) {
     const product = new Product(
       null,
@@ -58,6 +85,19 @@ export class ProductController {
     description: 'Consultar product por id',
     type: CreateProductDto,
   })
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    description: 'Consultar Produto',
+    examples: {
+      Produto1: {
+        value: 1,
+      },
+      Produto2: {
+        value: 2,
+      },
+    },
+  })
   findOne(@Param('id') id: number) {
     return this.adapter.findOne(id);
   }
@@ -68,6 +108,19 @@ export class ProductController {
     status: 200,
     description: 'Consultar produto por categoria',
     type: [CreateProductDto],
+  })
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    description: 'Consultar Produto por categoria',
+    examples: {
+      Categoria1: {
+        value: 1,
+      },
+      Categoria2: {
+        value: 2,
+      },
+    },
   })
   findAllByCategory(@Param('id') id: number) {
     return this.adapter.findAllByCategory(id);
@@ -80,16 +133,45 @@ export class ProductController {
     description: 'Atualizar produto',
     type: CreateProductDto,
   })
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    description: 'Consultar Produto',
+    examples: {
+      Produto1: {
+        value: 1,
+      },
+      Produto2: {
+        value: 2,
+      },
+    },
+  })
+  @ApiBody({
+    type: CreateProductDto,
+    examples: {
+      example1: {
+        summary: 'Produto 1',
+        value: {
+          name: 'Doce de leite',
+          description: 'Doce de leite da fazenda',
+          price: 5.99,
+          image: '',
+          category: 1,
+        },
+      },
+      example2: {
+        summary: 'Produto 2',
+        value: {
+          name: 'Batata frita',
+          description: 'Batata frita crocante',
+          price: 3.99,
+          image: '',
+          category: 1,
+        },
+      },
+    },
+  })
   update(@Param('id') id: number, @Body() productDto: CreateProductDto) {
-    // const product = new Product(
-    //   id,
-    //   productDto.name,
-    //   productDto.description,
-    //   productDto.image,
-    //   productDto.price,
-    //   productDto.category,
-    // );
-    // Object.assign(product, productDto);
     return this.adapter.update(id, productDto);
   }
 
@@ -98,6 +180,19 @@ export class ProductController {
   @ApiResponse({
     status: 204,
     description: 'Excluir produto por id',
+  })
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    description: 'Consultar Produto',
+    examples: {
+      Produto1: {
+        value: 1,
+      },
+      Produto2: {
+        value: 2,
+      },
+    },
   })
   async remove(@Param('id') id: number, @Res() response: Response) {
     await this.adapter.remove(id);
