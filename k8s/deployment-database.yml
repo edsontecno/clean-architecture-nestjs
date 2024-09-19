@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-db
+spec:
+  replicas: 1  # Uma réplica do banco de dados
+  selector:
+    matchLabels:
+      app: postgres-db  # Seleciona os pods do PostgreSQL
+  template:
+    metadata:
+      labels:
+        app: postgres-db  # Associa esse label ao pod criado
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:latest  # Imagem do PostgreSQL
+        ports:
+        - containerPort: 5432  # Porta padrão do PostgreSQL
+        env:
+        - name: POSTGRES_DB
+          value: postgres  # Nome do banco de dados
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: username  # Usuário do banco de dados vindo de um Secret
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: password  # Senha do banco de dados vinda de um Secret
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: postgres-storage  # Monta o volume persistente
+      volumes:
+      - name: postgres-storage
+        persistentVolumeClaim:
+          claimName: postgres-pvc  # Referência ao PVC

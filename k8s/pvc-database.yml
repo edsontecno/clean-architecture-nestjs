@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce  # Volume pode ser montado apenas por um nó
+  resources:
+    requests:
+      storage: 1Gi  # 1 GB de armazenamento solicitado
