@@ -1,15 +1,16 @@
 import { Module } from '@nestjs/common';
-// import { TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { IPaymentData } from 'src/application/payment/interfaces/IPaymentData';
 import { IPaymentUseCase } from 'src/application/payment/interfaces/IPaymentUseCases';
 import { PaymentUseCase } from 'src/application/payment/useCases/PaymentUseCase';
 import { PaymentController } from './payment.controller';
-// import { PaymentEntity } from 'src/adapters/payment/gateway/Payment.entity';
+import { PaymentGateway } from 'src/adapters/payment/gateway/PaymentGateway';
+import { PaymentEntity } from 'src/adapters/payment/gateway/Payment.entity';
 import { PaymentAdapterController } from 'src/adapters/payment/controller/PaymentAdaptercontroller';
 import { PaymentPresenter } from 'src/adapters/payment/presenter/PaymentPresenter';
-import { PaymentGateway } from 'src/adapters/payment/gateway/PaymentGateway';
 
 @Module({
+  imports: [TypeOrmModule.forFeature([PaymentEntity])],
   controllers: [PaymentController],
   providers: [
     {
@@ -21,13 +22,14 @@ import { PaymentGateway } from 'src/adapters/payment/gateway/PaymentGateway';
       useClass: PaymentPresenter,
     },
     {
-      provide: PaymentUseCase,
+      provide: IPaymentUseCase,
       useClass: PaymentUseCase,
     },
     {
       provide: IPaymentData,
       useClass: PaymentGateway,
     },
+    PaymentGateway, // Adicionando o PaymentGateway como provider diretamente
   ],
   exports: [
     {
@@ -38,6 +40,6 @@ import { PaymentGateway } from 'src/adapters/payment/gateway/PaymentGateway';
       provide: IPaymentData,
       useClass: PaymentGateway,
     },
-  ]
+  ],
 })
 export class PaymentModule {}
