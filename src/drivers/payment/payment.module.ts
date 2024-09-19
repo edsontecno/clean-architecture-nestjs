@@ -1,45 +1,43 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+// import { TypeOrmModule } from '@nestjs/typeorm';
 import { IPaymentData } from 'src/application/payment/interfaces/IPaymentData';
 import { IPaymentUseCase } from 'src/application/payment/interfaces/IPaymentUseCases';
 import { PaymentUseCase } from 'src/application/payment/useCases/PaymentUseCase';
-// import { CustomerController } from './customer.controller';
-// import { CustomerEntity } from 'src/adapters/custumer/gateway/Customer.entity';
-// import { CustomerAdapterController } from 'src/adapters/custumer/controller/CustumerAdapterController';
-// import { CustomerPresenter } from 'src/adapters/custumer/presenter/CustomerPresenter';
-// import { CustomerGateway } from 'src/adapters/custumer/gateway/CustomerGateway';
+import { PaymentController } from './payment.controller';
+// import { PaymentEntity } from 'src/adapters/payment/gateway/Payment.entity';
+import { PaymentAdapterController } from 'src/adapters/payment/controller/PaymentAdaptercontroller';
+import { PaymentPresenter } from 'src/adapters/payment/presenter/PaymentPresenter';
+import { PaymentGateway } from 'src/adapters/payment/gateway/PaymentGateway';
 
-// @Module({
-//   imports: [TypeOrmModule.forFeature([CustomerEntity])],
-//   controllers: [CustomerController],
-//   providers: [
-//     {
-//       provide: CustomerAdapterController,
-//       useClass: CustomerAdapterController,
-//     },
-//     {
-//       provide: CustomerPresenter,
-//       useClass: CustomerPresenter,
-//     },
-//     {
-//       provide: ICustomerUseCase,
-//       useClass: CustomerUseCase,
-//     },
-//     {
-//       provide: ICustomerData,
-//       useClass: CustomerGateway,
-//     },
-//   ],
-//   exports: [
-//     {
-//       provide: ICustomerUseCase,
-//       useClass: CustomerUseCase,
-//     },
-//     {
-//       provide: ICustomerData,
-//       useClass: CustomerGateway,
-//     },
-//   ],
-//   // exports: [...Services, ...ServicesOutput],
-// })
-// export class CustomerModule {}
+@Module({
+  controllers: [PaymentController],
+  providers: [
+    {
+      provide: PaymentAdapterController,
+      useClass: PaymentAdapterController,
+    },
+    {
+      provide: PaymentPresenter,
+      useClass: PaymentPresenter,
+    },
+    {
+      provide: PaymentUseCase,
+      useClass: PaymentUseCase,
+    },
+    {
+      provide: IPaymentData,
+      useClass: PaymentGateway,
+    },
+  ],
+  exports: [
+    {
+      provide: IPaymentUseCase,
+      useClass: PaymentUseCase,
+    },
+    {
+      provide: IPaymentData,
+      useClass: PaymentGateway,
+    },
+  ]
+})
+export class PaymentModule {}
