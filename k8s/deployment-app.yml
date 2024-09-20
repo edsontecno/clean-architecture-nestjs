@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-app
+spec:
+  replicas: 2  # Quantidade de réplicas da aplicação
+  selector:
+    matchLabels:
+      app: backend-app  # Seleciona pods com essa label
+  template:
+    metadata:
+      labels:
+        app: backend-app  # Associa esse label ao pod criado
+    spec:
+      containers:
+      - name: backend-app
+        image: irlan/clean-architecture-nestjs-backend:latest  # Imagem do Node.js 
+        ports:
+        - containerPort: 3000  # Porta exposta pela aplicação
+        env:
+        - name: SERVER_PORT
+          value: "3000"  # Porta do servidor
+        - name: DB_HOST
+          value: postgres-db  # O serviço do banco de dados no cluster
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: username  # Referência a um Secret com as credenciais do banco
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: password
+        - name: DB_NAME
+          value: postgres
+        - name: DB_ADMIN_EMAIL
+          value: admin@root.com
+        - name: NODE_ENV
+          value: production
