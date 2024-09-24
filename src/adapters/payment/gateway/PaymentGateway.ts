@@ -22,8 +22,8 @@ export class PaymentGateway {
           {
             sku_number: 'A123K9191938',
             category: 'marketplace',
-            title: 'Point Mini',
-            description: 'This is the Point Mini',
+            title: 'FIAP - Pós-Graduação',
+            description: 'Loja de teste',
             unit_price: price.price,
             quantity: 1,
             unit_measure: 'unit',
@@ -42,10 +42,10 @@ export class PaymentGateway {
         headers: {
           Authorization: `Bearer ${this.tokenClient}`,
           'Content-Type': 'application/json'
-        },
+        }
       });
 
-      return response.data.qr_data;
+      return response.data;
     } catch (error) {
       throw new Error(`Payment creation failed: ${error.message}`);
     }
