@@ -29,7 +29,7 @@ import { PaymentPresenter } from 'src/adapters/payment/presenter/PaymentPresente
       provide: IPaymentData,
       useClass: PaymentGateway,
     },
-    PaymentGateway, // Adicionando o PaymentGateway como provider diretamente
+    PaymentGateway,
   ],
   exports: [
     {

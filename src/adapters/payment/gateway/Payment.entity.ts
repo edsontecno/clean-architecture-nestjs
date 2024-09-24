@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity({ name: 'pagamentos' })  // Define o nome da tabela no banco de dados
+@Entity({ name: 'pagamentos' })
 export class PaymentEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;

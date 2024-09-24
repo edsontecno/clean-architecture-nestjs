@@ -38,7 +38,7 @@ export class PaymentController {
     description: 'pagamento criado',
   })
   @ApiInternalServerErrorResponse({ description: 'Erro interno no servidor' })
-  async createPayment(@Body() paymentDTO: PaymentDTO) {
-    return await this.adapter.createPayment(paymentDTO);
+  async createPayment(@Body() price: PaymentDTO) {
+    return await this.adapter.createPayment(price);
   }
 }

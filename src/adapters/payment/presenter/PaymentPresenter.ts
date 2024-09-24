@@ -7,7 +7,6 @@ export class PaymentPresenter {
   convertEntityToResponseDto(entity: Payment): PaymentDTO {
     const response = new PaymentDTO();
     response.price = entity.price;
-    response.description = entity.description;
     return response;
   }
 }

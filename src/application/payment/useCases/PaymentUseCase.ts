@@ -13,7 +13,7 @@ export class PaymentUseCase implements IPaymentUseCase {
         const preference = {
           items: [
             {
-              title: payment.description,
+              title: 'teste',
               quantity: '1',
               currency_id: 'BRL',
               unit_price: payment.price,
