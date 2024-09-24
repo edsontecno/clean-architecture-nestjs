@@ -55,3 +55,11 @@ para reverter a última migração criada, execute o comando:
 ```
 npm run migration:revert
 ```
+
+
+## Rodando com kubernetes
+```
+minikube stop
+minikube delete
+minikube start
+```

@@ -14,7 +14,13 @@ Essa api foi desenvolvivida usando as seguintes tecnologias:
  - Migrations
  - Docker
 
- ## Executar com kubernet
+ ## Executar com kubernetes
+
+Acesse a pasta k8s
+
+```ssh
+ cd k8s
+```
 
  Secrets: As credenciais do banco (usuário e senha) são carregadas a partir de um Secret Kubernetes, que deve ser criado previamente com os comandos:
 ```ssh
@@ -66,7 +72,7 @@ Formas de acessar pelo kubernet localmente
 
 O serviço backend-app-service será acessível localmente na porta 3001, que corresponde à porta da aplicação Node.js no container.
 ```ssh
-  http://localhost:3001/api-docs
+  http://localhost:3000/api-docs
 ```  
 
 
