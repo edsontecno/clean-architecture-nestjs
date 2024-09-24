@@ -6,9 +6,11 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER } from '@nestjs/core';
 import { FilterExceptionGlobal } from './system/filtros/filter-exception-global';
 import { PostgresConfigService } from './system/config/postgres.config.service';
+import { PaymentModule } from './drivers/payment/payment.module';
 
 @Module({
   imports: [
+    PaymentModule,
     ApplicationModule,
     AdaptersModule,
     ConfigModule.forRoot({
