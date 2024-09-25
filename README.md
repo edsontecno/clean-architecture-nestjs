@@ -32,10 +32,11 @@ Criar o Deployment e Service para o Banco de Dados:
   kubectl apply -f service-database.yml
 ```
 
-Criar o Deployment e Service para o App Node.js:
+Criar o Deployment e Service para o App Node.js e aplica o Horizontal Pod Autoscaler (HPA):
 ```ssh
   kubectl apply -f deployment-app.yml
   kubectl apply -f service-app.yml
+  kubectl apply -f hpa.yml
 ```
 
 Criar o Ingress:
@@ -53,6 +54,11 @@ Verificar os services rodando: Para verificar os serviços criados:
 kubectl get svc
 ```
 
+Monitora o status do HPA para ver se ele está escalando conforme esperado:
+```ssh
+kubectl get hpa
+```
+
 Formas de acessar pelo kubernet localmente
 1) No arquivo /etc/hosts (Linux/macOS) ou C:\Windows\System32\drivers\etc\hosts (Windows), adicione:
 ```ssh
@@ -61,15 +67,13 @@ Formas de acessar pelo kubernet localmente
 
 2) Usar o kubectl port-forward
 ```ssh
-  kubectl port-forward service/backend-app-service 3000:3001
+  kubectl port-forward service/backend-app-service 3000:3000
 ```
 
-O serviço backend-app-service será acessível localmente na porta 3001, que corresponde à porta da aplicação Node.js no container.
+O serviço backend-app-service será acessível localmente na porta 3000, que corresponde à porta da aplicação Node.js no container.
 ```ssh
-  http://localhost:3001/api-docs
+  http://localhost:3000/api-docs
 ```  
-
-
 ## Executar o projeto
 Para executar o projeto é necessário rodar apenas o comando abaixo:
 
