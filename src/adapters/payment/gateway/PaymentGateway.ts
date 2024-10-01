@@ -11,30 +11,29 @@ export class PaymentGateway {
   async createPayment(price: PaymentDTO) {
     try {
       const url = `https://api.mercadopago.com/instore/orders/qr/seller/collectors/${this.userIdVendedor}/pos/${this.externalPosId}/qrs`;
-
       const body = {
         cash_out: {
           amount: 0
         },
-        description: 'compra teste',
+        description: 'Produto',
         external_reference: 'reference_12345',
         items: [
           {
             sku_number: 'A123K9191938',
             category: 'marketplace',
             title: 'FIAP - Pós-Graduação',
-            description: 'Loja de teste',
+            description: 'Restaurante',
             unit_price: price.price,
             quantity: 1,
             unit_measure: 'unit',
             total_amount: price.price
           }
         ],
-        notification_url: 'https://www.yourserver.com/notifications',
+        notification_url: 'https://webhook.site/73513925-c7ab-46fb-b0ac-e75a903b72ae',
         sponsor: {
           id: 662208785
         },
-        title: 'Product order',
+        title: 'Solicitação do pedido',
         total_amount: price.price
       }
 
