@@ -14,6 +14,7 @@ import {
     ApiInternalServerErrorResponse,
     ApiOperation,
     ApiResponse,
+    ApiParam,
     ApiTags,
   } from '@nestjs/swagger';
   import { ErrorResponseBody } from 'src/system/filtros/filter-exception-global';
@@ -40,5 +41,20 @@ export class PaymentController {
   @ApiInternalServerErrorResponse({ description: 'Erro interno no servidor' })
   async createPayment(@Body() price: PaymentDTO) {
     return await this.adapter.createPayment(price);
+  }
+  @Get(':payment_id')
+  @ApiOperation({ summary: 'Vizualizar status do pagamento' })
+  @ApiResponse({
+    status: 200,
+    description: 'Registros do pagamento',
+  })
+  @ApiInternalServerErrorResponse({ description: 'Erro interno no servidor' })
+  @ApiParam({
+    name: 'payment_id',
+    type: Number,
+    description: 'Consultar pagamento'
+  })
+  async webHook(@Param() paymenty_id: number) {
+    return await this.adapter.webHook(paymenty_id);
   }
 }

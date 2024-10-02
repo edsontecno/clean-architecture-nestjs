@@ -49,4 +49,21 @@ export class PaymentUseCase {
       throw new Error(`Payment creation failed: ${error.message}`);
     }
   }
+
+  async webHook(payment_id: number) {
+    try {
+      const url = `https://api.mercadopago.com/merchant_orders/${payment_id}`;
+
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${this.tokenClient}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      return response.data;
+    } catch (error) {
+      throw new Error(`weebhook failed: ${error.message}`);
+    }
+  }
 }

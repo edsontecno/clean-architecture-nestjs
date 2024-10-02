@@ -16,9 +16,8 @@ export class PaymentAdapterController {
     return await this.useCase.createPayment(price);
   }
 
-  // @Post('webhook')
-  // async handleWebhook(@Req() req: Request, @Res() res: Response) {
-  //   await this.handleWebhookUseCase.execute(req.body);
-  //   return res.status(200).send('OK');
-  // }
+  async webHook(payment_id: number) {
+    return await this.useCase.webHook(payment_id);
+  }
+
 }
