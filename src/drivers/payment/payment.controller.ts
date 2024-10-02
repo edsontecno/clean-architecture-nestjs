@@ -42,7 +42,7 @@ export class PaymentController {
   async createPayment(@Body() price: PaymentDTO) {
     return await this.adapter.createPayment(price);
   }
-  @Get(':payment_id')
+  @Get(':id')
   @ApiOperation({ summary: 'Vizualizar status do pagamento' })
   @ApiResponse({
     status: 200,
@@ -50,11 +50,11 @@ export class PaymentController {
   })
   @ApiInternalServerErrorResponse({ description: 'Erro interno no servidor' })
   @ApiParam({
-    name: 'payment_id',
+    name: 'id',
     type: Number,
     description: 'Consultar pagamento'
   })
-  async webHook(@Param() paymenty_id: number) {
-    return await this.adapter.webHook(paymenty_id);
+  async getPayment(@Param('id') id: number) {
+    return await this.adapter.getPayment(id);
   }
 }

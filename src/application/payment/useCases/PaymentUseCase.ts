@@ -50,10 +50,9 @@ export class PaymentUseCase {
     }
   }
 
-  async webHook(payment_id: number) {
+  async getPayment(id: number) {
     try {
-      const url = `https://api.mercadopago.com/merchant_orders/${payment_id}`;
-
+      const url = `https://api.mercadopago.com/merchant_orders/${id}`;
       const response = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${this.tokenClient}`,
