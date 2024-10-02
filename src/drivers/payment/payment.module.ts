@@ -13,14 +13,8 @@ import { PaymentPresenter } from 'src/adapters/payment/presenter/PaymentPresente
   imports: [TypeOrmModule.forFeature([PaymentEntity])],
   controllers: [PaymentController],
   providers: [
-    {
-      provide: PaymentAdapterController,
-      useClass: PaymentAdapterController,
-    },
-    {
-      provide: PaymentPresenter,
-      useClass: PaymentPresenter,
-    },
+    PaymentAdapterController,
+    PaymentPresenter,
     {
       provide: IPaymentUseCase,
       useClass: PaymentUseCase,
@@ -30,16 +24,11 @@ import { PaymentPresenter } from 'src/adapters/payment/presenter/PaymentPresente
       useClass: PaymentGateway,
     },
     PaymentGateway,
+    PaymentUseCase,
   ],
   exports: [
-    {
-      provide: IPaymentUseCase,
-      useClass: PaymentUseCase,
-    },
-    {
-      provide: IPaymentData,
-      useClass: PaymentGateway,
-    },
+    IPaymentUseCase,
+    IPaymentData,
   ],
 })
 export class PaymentModule {}
