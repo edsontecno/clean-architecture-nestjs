@@ -12,11 +12,11 @@ export class PaymentAdapterController {
     private readonly useCase: PaymentUseCase
   ) {}
 
-  async createPayment(price: PaymentDTO) {
-    return await this.useCase.createPayment(price);
+  async createPayment(amount: PaymentDTO) {
+    return await this.useCase.createPayment(amount);
   }
 
-  async getPayment(id: number) {
-    return await this.useCase.getPayment(id);
+  async getPayment(payment_id: number) {
+    return await this.useCase.getPayment(payment_id);
   }
 }

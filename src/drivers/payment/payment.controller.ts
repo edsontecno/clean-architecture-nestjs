@@ -39,10 +39,10 @@ export class PaymentController {
     description: 'pagamento criado',
   })
   @ApiInternalServerErrorResponse({ description: 'Erro interno no servidor' })
-  async createPayment(@Body() price: PaymentDTO) {
-    return await this.adapter.createPayment(price);
+  async createPayment(@Body() amount: PaymentDTO) {
+    return await this.adapter.createPayment(amount);
   }
-  @Get(':id')
+  @Get(':payment_id')
   @ApiOperation({ summary: 'Vizualizar status do pagamento' })
   @ApiResponse({
     status: 200,
@@ -50,11 +50,11 @@ export class PaymentController {
   })
   @ApiInternalServerErrorResponse({ description: 'Erro interno no servidor' })
   @ApiParam({
-    name: 'id',
+    name: 'payment_id',
     type: Number,
     description: 'Consultar pagamento'
   })
-  async getPayment(@Param('id') id: number) {
-    return await this.adapter.getPayment(id);
+  async getPayment(@Param('payment_id') payment_id: number) {
+    return await this.adapter.getPayment(payment_id);
   }
 }
