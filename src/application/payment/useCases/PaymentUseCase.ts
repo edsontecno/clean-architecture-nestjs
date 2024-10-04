@@ -15,7 +15,7 @@ export class PaymentUseCase {
         transaction_amount: amount.amount,
         description: 'Compra no PIX',
         payment_method_id: 'pix',
-        notification_url: 'https://webhook.site/#!/view/73513925-c7ab-46fb-b0ac-e75a903b72ae/1b7499ef-b619-4762-86ae-40e33d86051c/1',
+        notification_url: 'https://3b90-2804-14c-d3-81b1-6836-58e5-e666-92ff.ngrok-free.app/webhook',
         payer: {
           email: 'gabriel.f.lazari@gmail.com'
         },
@@ -27,7 +27,7 @@ export class PaymentUseCase {
     }
   }
 
-  async getPayment(payment_id: number) {
+  async handleWebhook(payment_id: number) {
     try {
       const url = `https://api.mercadopago.com/v1/payments/${payment_id}`;
       const response = await axios.get(url, {

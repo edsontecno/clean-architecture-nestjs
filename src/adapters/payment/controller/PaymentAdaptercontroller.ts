@@ -16,7 +16,7 @@ export class PaymentAdapterController {
     return await this.useCase.createPayment(amount);
   }
 
-  async getPayment(payment_id: number) {
-    return await this.useCase.getPayment(payment_id);
+  async handleWebhook(payment_id: number) {
+    return await this.useCase.handleWebhook(payment_id);
   }
 }
