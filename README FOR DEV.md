@@ -62,4 +62,16 @@ npm run migration:revert
 minikube stop
 minikube delete
 minikube start
+
+kubectl create secret generic db-credentials --from-literal=username=root --from-literal=password=root &&
+kubectl apply -f pvc-database.yml &&
+kubectl apply -f deployment-database.yml &&
+kubectl apply -f service-database.yml &&
+kubectl apply -f deployment-app.yml &&
+kubectl apply -f service-app.yml &&
+kubectl apply -f hpa.yml &&
+kubectl apply -f ingress-app.yml
+
+kubectl port-forward service/backend-app-service 3000:3000
+```
 ```

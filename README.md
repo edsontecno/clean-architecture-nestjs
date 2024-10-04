@@ -14,6 +14,13 @@ Essa api foi desenvolvivida usando as seguintes tecnologias:
  - Migrations
  - Docker
 
+## Arquitetura
+
+A arquitetura utilizada no projeto comtempla a escabilidade utilizando Kubernetes conforme imagem abaixo:
+
+![Arquitetura](/docs/arquitetura.png)
+
+
  ## Executar com kubernetes
 
 Acesse a pasta k8s
