@@ -9,6 +9,7 @@ import { IOrderUseCase } from '../interfaces/IOrderUseCase';
 import { OrderItem } from '../entities/OrderItems';
 import { IProductData } from 'src/application/product/interfaces/IProductData';
 import { ICustomerUseCase } from 'src/application/customer/interfaces/ICustomerUseCase';
+import { MercadoPagoConfig, Payment } from 'mercadopago';
 
 @Injectable()
 export class OrderUseCase implements IOrderUseCase {
@@ -97,17 +98,25 @@ export class OrderUseCase implements IOrderUseCase {
 
   async processPayment(orderId: number) {
     console.log('Processando pagamento....');
-    await this.awaitPayment();
+    await this.awaitPayment(orderId);
     console.log('Pagamento processado');
     this.persist.changeStatus(orderId, OrderStatus.Received);
   }
 
-  awaitPayment() {
-    return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        resolve();
-      }, 30000);
-    });
+  async awaitPayment(amount) {    
+    const client = new MercadoPagoConfig({ accessToken: 'TEST-2282551978833497-100320-c82d058610e7b085af78d1551645b98f-676499050' });
+    const payment = new Payment(client);
+    const body = {
+      transaction_amount: 10,
+      description: 'Compra no PIX',
+      payment_method_id: 'pix',
+      notification_url: 'https://3b90-2804-14c-d3-81b1-6836-58e5-e666-92ff.ngrok-free.app/webhook',
+      payer: {
+        email: 'gabriel.f.lazari@gmail.com'
+      },
+    };
+    const { point_of_interaction: { transaction_data: { qr_code } }, id } = await payment.create({ body });
+    return { payment_id: id, qr_code: qr_code };
   }
 
   private statusPermitidos = {
