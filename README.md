@@ -1,10 +1,11 @@
-# API Lanchonete 4 amigos
+# API Lanchonete 5 amigos
 
 ## Integrantes do grupo 22 
 - Edson Pereira de Andrade
 - Evelly Cristina Cramolish Palombo Santos 
 - Gabriel Fernandes Lazari 
 - Marcelo Rodrigues
+- Irlan Gomes
 
 ## Tecnologias
 Essa api foi desenvolvivida usando as seguintes tecnologias:
@@ -103,6 +104,8 @@ Todos os endpoint estão documentos utilizando o Swagger, o endereço disponíve
 ```  
 
 # Aplicação
+
+Para execução das APIs do projeto seguir a ordem abaixo:
 
 ## Gerenciamento de categoria
 Todo o gerenciamento de categorias de produtos estão disponíveis nos endpoints [/category](http://localhost:3000/api-docs#/Categoria)
