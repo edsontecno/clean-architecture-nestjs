@@ -12,10 +12,6 @@ export class PaymentAdapterController {
     private readonly useCase: PaymentUseCase
   ) {}
 
-  async createPayment(amount: PaymentDTO) {
-    return await this.useCase.createPayment(amount);
-  }
-
   async handleWebhook(payment_id: number) {
     return await this.useCase.handleWebhook(payment_id);
   }

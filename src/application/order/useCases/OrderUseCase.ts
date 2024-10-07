@@ -116,6 +116,7 @@ export class OrderUseCase implements IOrderUseCase {
       },
     };
     const { point_of_interaction: { transaction_data: { qr_code } }, id } = await payment.create({ body });
+
     return { payment_id: id, qr_code: qr_code };
   }
 

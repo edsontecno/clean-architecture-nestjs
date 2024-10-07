@@ -33,17 +33,6 @@ import axios from 'axios';
 @ApiInternalServerErrorResponse({ description: 'Erro do servidor' })
 export class PaymentController {
   constructor(private readonly adapter: PaymentAdapterController) { }
-  @Post()
-  @ApiOperation({ summary: 'Criar pagamento' })
-  @ApiResponse({
-    status: 201,
-    description: 'pagamento criado',
-  })
-  @ApiInternalServerErrorResponse({ description: 'Erro interno no servidor' })
-  async createPayment(@Body() amount: PaymentDTO) {
-    return await this.adapter.createPayment(amount);
-  }
-
   @Post('webhook')
   @ApiOperation({ summary: 'Receber eventos do webhook' })
   @ApiResponse({
@@ -52,7 +41,10 @@ export class PaymentController {
   })
   @ApiInternalServerErrorResponse({ description: 'Erro interno no servidor' })
   async handleWebhook(@Body() payload: any, @Res() response: Response) {
-    console.log(payload);
+    if (!payload.data.id) {
+      return 'Webhook ativo';
+    }
+
     const payment = await this.adapter.handleWebhook(payload.data.id);
 ;
     if (payment.status === 'pending') {
@@ -64,12 +56,10 @@ export class PaymentController {
     if (payment.status === 'rejected') {
       console.log('Pagamento recusado');
     }
-
-    return response.status(HttpStatus.OK).send('Webhook recebido');
   }
 
   @Get()
-  @ApiOperation({ summary: 'Endpoint de verificação' })
+  @ApiOperation({ summary: 'Endpoint Inicial' })
   @ApiResponse({ status: 200, description: 'Servidor ativo' })
   getHealthCheck(@Res() response: Response) {
     return response.status(HttpStatus.OK).send('Servidor ativo');
