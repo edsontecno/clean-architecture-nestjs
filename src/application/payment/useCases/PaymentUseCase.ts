@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
-import { PaymentDTO } from 'src/adapters/payment/dto/PaymentDto';
 
 @Injectable()
 export class PaymentUseCase {
-  private ACCESS_TOKEN_TEST = 'TEST-2282551978833497-100320-c82d058610e7b085af78d1551645b98f-676499050';
+  private ACCESS_TOKEN_TEST =
+    'TEST-2282551978833497-100320-c82d058610e7b085af78d1551645b98f-676499050';
 
   async handleWebhook(payment_id: number) {
     try {
@@ -12,8 +12,8 @@ export class PaymentUseCase {
       const response = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${this.ACCESS_TOKEN_TEST}`,
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+        },
       });
 
       return { status: response.data.status };
