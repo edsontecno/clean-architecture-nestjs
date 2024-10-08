@@ -8,9 +8,10 @@ import { PaymentGateway } from 'src/adapters/payment/gateway/PaymentGateway';
 import { PaymentEntity } from 'src/adapters/payment/gateway/Payment.entity';
 import { PaymentAdapterController } from 'src/adapters/payment/controller/PaymentAdaptercontroller';
 import { PaymentPresenter } from 'src/adapters/payment/presenter/PaymentPresenter';
+import { OrderEntity } from 'src/adapters/order/gateway/Order.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([PaymentEntity])],
+  imports: [TypeOrmModule.forFeature([PaymentEntity, OrderEntity])],
   controllers: [PaymentController],
   providers: [
     PaymentAdapterController,

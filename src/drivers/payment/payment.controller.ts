@@ -46,11 +46,8 @@ export class PaymentController {
     }
 
     const payment = await this.adapter.handleWebhook(payload.data.id);
-    if (payment.status === 'approved') {
-      console.log('Pagamento aprovado');
-    } 
-    if (payment.status === 'rejected') {
-      console.log('Pagamento recusado');
+    if (payment.status === 'approved' || payment.status === 'rejected') {
+      return await this.adapter.updateStatusPayment(payload.data.id, payment.status);
     }
   }
 
