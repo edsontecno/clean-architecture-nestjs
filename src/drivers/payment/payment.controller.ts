@@ -46,10 +46,6 @@ export class PaymentController {
     }
 
     const payment = await this.adapter.handleWebhook(payload.data.id);
-;
-    if (payment.status === 'pending') {
-      console.log('Pagamento aguardando');
-    } 
     if (payment.status === 'approved') {
       console.log('Pagamento aprovado');
     } 

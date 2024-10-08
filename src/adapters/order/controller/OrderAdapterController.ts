@@ -13,10 +13,10 @@ export class OrderAdapterController {
     private presenter: OrderPresenter,
   ) {}
 
-  async save(orderDto: CreateOrderDto): Promise<number> {
+  async save(orderDto: CreateOrderDto): Promise<object> {
     const order = this.gateway.convertDtoToEntity(orderDto);
     const savedOrder = await this.useCase.save(order);
-    return savedOrder.id;
+    return savedOrder;
   }
 
   async getAllByStatus(status: string) {

@@ -38,12 +38,12 @@ export class OrderUseCase implements IOrderUseCase {
         'Nenhum produto foi adicionado ao pedido',
       );
     }
-
     await this.prepareItems(order, orderProcess);
-
+    const payment = await this.processPayment(orderProcess);
+    orderProcess.payment_id = payment.payment_id;
     const orderSaved = await this.persist.save(orderProcess);
-    this.processPayment(orderSaved.id);
-
+    orderSaved.payment_id = payment.payment_id;
+    orderSaved.qr_code = payment.qr_code;
     return orderSaved;
   }
 
@@ -96,18 +96,18 @@ export class OrderUseCase implements IOrderUseCase {
     }
   }
 
-  async processPayment(orderId: number) {
+  async processPayment(orderProcess: OrderProcess) {
     console.log('Processando pagamento....');
-    await this.awaitPayment(orderId);
+    const payment = await this.awaitPayment(orderProcess.total);
     console.log('Pagamento processado');
-    this.persist.changeStatus(orderId, OrderStatus.Received);
+    return payment;
   }
 
-  async awaitPayment(amount) {    
+  async awaitPayment(orderAmount: number) {    
     const client = new MercadoPagoConfig({ accessToken: 'TEST-2282551978833497-100320-c82d058610e7b085af78d1551645b98f-676499050' });
     const payment = new Payment(client);
     const body = {
-      transaction_amount: 10,
+      transaction_amount: orderAmount,
       description: 'Compra no PIX',
       payment_method_id: 'pix',
       notification_url: 'https://3b90-2804-14c-d3-81b1-6836-58e5-e666-92ff.ngrok-free.app/webhook',

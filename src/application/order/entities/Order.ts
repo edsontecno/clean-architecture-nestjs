@@ -11,4 +11,6 @@ export class Order {
   status: OrderStatus;
   awaitTime: string;
   createdAt: string;
+  payment_id: number;
+  qr_code: string;
 }

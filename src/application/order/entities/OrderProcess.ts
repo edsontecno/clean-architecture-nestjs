@@ -6,6 +6,8 @@ export class OrderProcess {
   customerId: number;
   total: number;
   status: OrderStatus;
+  payment_id: number;
+  qr_code: string;
 
   constructor() {
     this.status = OrderStatus.Pending;
