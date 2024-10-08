@@ -1,4 +1,5 @@
-import { OrderStatus } from 'src/application/order/entities/OrderStatus';
+import { CustomerEntity } from './../../custumer/gateway/Customer.entity';
+import { OrderStatus } from './../../../application/order/entities/OrderStatus';
 import {
   Column,
   CreateDateColumn,
@@ -10,7 +11,6 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { OrderItemEntity } from './OrderItem.entity';
-import { CustomerEntity } from 'src/adapters/custumer/gateway/Customer.entity';
 
 @Entity({ name: 'pedidos' })
 export class OrderEntity {
@@ -45,6 +45,7 @@ export class OrderEntity {
 
   @OneToMany(() => OrderItemEntity, (itemOrder) => itemOrder.order, {
     cascade: true,
+    nullable: true,
   })
   itemsOrder: OrderItemEntity[];
   @Column()

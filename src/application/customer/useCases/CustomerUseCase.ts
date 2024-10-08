@@ -17,7 +17,7 @@ export class CustomerUseCase extends Service implements ICustomerUseCase {
     this.validarRegrasCustomer(customer);
 
     const customerPesquisado = await this.getCustomer(customer.cpf);
-
+    console.log(customerPesquisado, customer);
     if (customerPesquisado.id !== undefined) {
       throw new BusinessRuleException('CPF já cadastrado na base de dados');
     }

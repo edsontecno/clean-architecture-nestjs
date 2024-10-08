@@ -1,4 +1,4 @@
-import { ProductEntity } from 'src/adapters/product/gateway/Product.entity';
+import { ProductEntity } from './../../product/gateway/Product.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'categorias' })

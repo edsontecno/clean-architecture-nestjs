@@ -1,4 +1,4 @@
-import { CategoryEntity } from 'src/adapters/category/gateway/Category.entity';
+import { CategoryEntity } from './../../category/gateway/Category.entity';
 import {
   Column,
   Entity,
