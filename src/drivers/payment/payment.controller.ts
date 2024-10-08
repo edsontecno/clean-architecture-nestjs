@@ -1,29 +1,30 @@
 import {
-    Body,
-    Controller,
-    Delete,
-    Get,
-    HttpStatus,
-    Param,
-    Patch,
-    Post,
-    Res,
-  } from '@nestjs/common';
-  import {
-    ApiBadRequestResponse,
-    ApiInternalServerErrorResponse,
-    ApiOperation,
-    ApiResponse,
-    ApiParam,
-    ApiTags,
-  } from '@nestjs/swagger';
-  import { ErrorResponseBody } from 'src/system/filtros/filter-exception-global';
-  import { Response } from 'express';
-  import { Payment } from 'src/application/payment/entities/Payment';
-  import { PaymentAdapterController } from 'src/adapters/payment/controller/PaymentAdaptercontroller';
-  import { PaymentDTO } from 'src/adapters/payment/dto/PaymentDto';
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+  Res,
+} from '@nestjs/common';
+import {
+  ApiBadRequestResponse,
+  ApiInternalServerErrorResponse,
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
+import { ErrorResponseBody } from 'src/system/filtros/filter-exception-global';
+import { Response } from 'express';
+import { Payment } from 'src/application/payment/entities/Payment';
+import { PaymentAdapterController } from 'src/adapters/payment/controller/PaymentAdaptercontroller';
+import { PaymentDTO } from 'src/adapters/payment/dto/PaymentDto';
+import axios from 'axios';
 
-@Controller('payment')
+@Controller()
 @ApiTags('Pagamento')
 @ApiBadRequestResponse({
   description: 'Detalhe do erro',
@@ -31,30 +32,29 @@ import {
 })
 @ApiInternalServerErrorResponse({ description: 'Erro do servidor' })
 export class PaymentController {
-  constructor(private readonly adapter: PaymentAdapterController) {}
-  @Post()
-  @ApiOperation({ summary: 'Criar pagamento' })
-  @ApiResponse({
-    status: 201,
-    description: 'pagamento criado',
-  })
-  @ApiInternalServerErrorResponse({ description: 'Erro interno no servidor' })
-  async createPayment(@Body() price: PaymentDTO) {
-    return await this.adapter.createPayment(price);
-  }
-  @Get(':id')
-  @ApiOperation({ summary: 'Vizualizar status do pagamento' })
+  constructor(private readonly adapter: PaymentAdapterController) { }
+  @Post('webhook')
+  @ApiOperation({ summary: 'Receber eventos do webhook' })
   @ApiResponse({
     status: 200,
-    description: 'Registros do pagamento',
+    description: 'Evento do webhook recebido com sucesso',
   })
   @ApiInternalServerErrorResponse({ description: 'Erro interno no servidor' })
-  @ApiParam({
-    name: 'id',
-    type: Number,
-    description: 'Consultar pagamento'
-  })
-  async getPayment(@Param('id') id: number) {
-    return await this.adapter.getPayment(id);
+  async handleWebhook(@Body() payload: any, @Res() response: Response) {
+    if (!payload.data.id) {
+      return 'Webhook ativo';
+    }
+
+    const payment = await this.adapter.handleWebhook(payload.data.id);
+    if (payment.status === 'approved' || payment.status === 'rejected') {
+      return await this.adapter.updateStatusPayment(payload.data.id, payment.status);
+    }
+  }
+
+  @Get()
+  @ApiOperation({ summary: 'Endpoint Inicial' })
+  @ApiResponse({ status: 200, description: 'Servidor ativo' })
+  getHealthCheck(@Res() response: Response) {
+    return response.status(HttpStatus.OK).send('Servidor ativo');
   }
 }

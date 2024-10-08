@@ -1,3 +1,3 @@
 export class Payment {
-  price: number;
+  amount: number;
 }

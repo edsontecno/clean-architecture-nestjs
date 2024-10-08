@@ -47,4 +47,6 @@ export class OrderEntity {
     cascade: true,
   })
   itemsOrder: OrderItemEntity[];
+  @Column()
+  payment_id: number;
 }

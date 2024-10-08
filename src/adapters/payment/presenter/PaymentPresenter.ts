@@ -6,7 +6,7 @@ import { Payment } from 'src/application/payment/entities/Payment';
 export class PaymentPresenter {
   convertEntityToResponseDto(entity: Payment): PaymentDTO {
     const response = new PaymentDTO();
-    response.price = entity.price;
+    response.amount = entity.amount;
     return response;
   }
 }

@@ -9,14 +9,15 @@ import { PaymentUseCase } from 'src/application/payment/useCases/PaymentUseCase'
 @Injectable()
 export class PaymentAdapterController {
   constructor(
-    private readonly useCase: PaymentUseCase
+    private readonly useCase: PaymentUseCase,
+    private readonly gateway: PaymentGateway
   ) {}
 
-  async createPayment(price: PaymentDTO) {
-    return await this.useCase.createPayment(price);
+  async handleWebhook(payment_id: number) {
+    return await this.useCase.handleWebhook(payment_id);
   }
 
-  async getPayment(id: number) {
-    return await this.useCase.getPayment(id);
+  async updateStatusPayment(payment_id: number, status: string) {
+    return await this.gateway.updateStatusPayment(payment_id, status);
   }
 }

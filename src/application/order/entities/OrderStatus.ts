@@ -2,9 +2,9 @@ export enum OrderStatus {
   Pending = 'pendente',
   Received = 'recebido',
   InProgress = 'em preparação',
-  Ready = 'pronto',
+  Ready = 'aproveed',
   Fineshed = 'finalizado',
-  Canceled = 'cancelado',
+  Canceled = 'rejected',
 }
 
 export const getEnumFromString = (value: string): OrderStatus | undefined => {
