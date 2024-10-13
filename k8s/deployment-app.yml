@@ -32,7 +32,7 @@ spec:
       #     value: lanchonete    
       containers:
       - name: backend-app
-        image: irlan/clean-architecture-nestjs-backend:latest  # Imagem do Node.js 
+        image: irlan/clean-architecture-nestjs-backend:1.0.0  # Imagem do Node.js 
         ports:
         - containerPort: 3000  # Porta exposta pela aplicação
         resources:
