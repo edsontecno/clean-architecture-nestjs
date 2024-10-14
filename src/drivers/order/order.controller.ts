@@ -228,12 +228,20 @@ export class OrderController {
     description: 'Consultar Produto',
     examples: {
       Status1: {
+        summary: 'Recebido',
+        value: 'recebido',
+      },
+      Status2: {
         summary: 'Em preparação',
         value: 'em preparação',
       },
-      Status2: {
+      Status3: {
         summary: 'Pronto',
-        value: 'pronto',
+        value: 'aproveed',
+      },
+      Status4: {
+        summary: 'Finalizado',
+        value: 'finalizado',
       },
     },
   })
