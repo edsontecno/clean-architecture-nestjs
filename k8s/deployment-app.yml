@@ -46,7 +46,7 @@ spec:
         - name: SERVER_PORT
           value: "3000"  # Porta do servidor
         - name: DB_HOST
-          value: postgres-db  # O serviço do banco de dados no cluster
+          value: postgres-db-service  # O serviço do banco de dados no cluster
         - name: DB_PORT
           value: "5432"
         - name: DB_USERNAME
