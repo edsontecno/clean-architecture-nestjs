@@ -124,3 +124,6 @@ Para alteração de status de um pedido existe o endpoint [/orders/{id}/change_s
 
 ## WebHooks Mercado Pago
 https://webhook.site/#!/view/73513925-c7ab-46fb-b0ac-e75a903b72ae/16d80e13-6925-47d3-a493-95ffc0e18cad/1
+
+# Vídeo
+O vídeo com a apresentação do trabalho encontra-se disponível [aqui](https://youtu.be/m97bkaQCFGI).
