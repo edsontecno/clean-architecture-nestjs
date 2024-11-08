@@ -1,0 +1,24 @@
+name: Deploy Infraestrutura Kubernetes
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v3
+
+      - name: Configurar Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.4.0
+
+      - name: Inicializar Terraform
+        run: terraform init
+
+      - name: Aplicar infraestrutura
+        run: terraform apply -auto-approve
