@@ -5,7 +5,6 @@
 - Evelly Cristina Cramolish Palombo Santos 
 - Gabriel Fernandes Lazari 
 - Marcelo Rodrigues
-- Irlan Gomes
 
 ## Tecnologias
 Essa api foi desenvolvivida usando as seguintes tecnologias:
@@ -23,14 +22,17 @@ A arquitetura utilizada no projeto comtempla a escabilidade utilizando Kubernete
 
 ## Banco de Dados
 
-Optamos pelo banco de dados Postgres relacional porque:
+Optamos pelo banco de dados Postgres porque:
 
 * **Integridade dos Dados**: Os relacionamentos entre tabelas (como pedidos, clientes e produtos) requerem uma estrutura que garanta integridade referencial. Os bancos de dados relacionais suportam isso de maneira nativa.
 
 * **Consistência e Confiabilidade**: Em sistemas de e-commerce, garantir consistência e confiabilidade dos dados é essencial, pois envolve transações financeiras.
+
 * **Flexibilidade para Consultas**: A linguagem SQL permite consultas complexas e eficientes para gerar relatórios, como vendas por cliente, produtos mais vendidos, etc.
+
 * **Suporte a Transações**: Bancos de dados relacionais suportam transações ACID (Atomicidade, Consistência, Isolamento e Durabilidade), o que é fundamental em sistemas que lidam com pedidos e pagamentos.
 
+Segue abaixo o modelo relacional da nossa base de dados.
 
 ![MER](/docs/MER.png)
 
