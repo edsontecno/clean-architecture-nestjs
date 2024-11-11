@@ -1,3 +1,4 @@
+import { PaymentEntity } from './../../payment/gateway/Payment.entity';
 import { CustomerEntity } from './../../custumer/gateway/Customer.entity';
 import { OrderStatus } from './../../../application/order/entities/OrderStatus';
 import {
@@ -48,6 +49,13 @@ export class OrderEntity {
     nullable: true,
   })
   itemsOrder: OrderItemEntity[];
-  @Column()
-  payment_id: number;
+
+  // @Column()
+  // payment_id: number;
+  @ManyToOne(() => PaymentEntity, {
+    nullable: true,
+    cascade: true,
+  })
+  @JoinColumn({ name: 'payment_id' })
+  payment: PaymentEntity;
 }

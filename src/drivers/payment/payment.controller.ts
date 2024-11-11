@@ -1,28 +1,15 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  HttpStatus,
-  Param,
-  Patch,
-  Post,
-  Res,
-} from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBody,
   ApiInternalServerErrorResponse,
   ApiOperation,
   ApiResponse,
-  ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
-import { ErrorResponseBody } from 'src/system/filtros/filter-exception-global';
 import { Response } from 'express';
-import { Payment } from 'src/application/payment/entities/Payment';
 import { PaymentAdapterController } from 'src/adapters/payment/controller/PaymentAdaptercontroller';
-import { PaymentDTO } from 'src/adapters/payment/dto/PaymentDto';
-import axios from 'axios';
+import { ErrorResponseBody } from 'src/system/filtros/filter-exception-global';
 
 @Controller()
 @ApiTags('Pagamento')
@@ -32,23 +19,42 @@ import axios from 'axios';
 })
 @ApiInternalServerErrorResponse({ description: 'Erro do servidor' })
 export class PaymentController {
-  constructor(private readonly adapter: PaymentAdapterController) { }
+  constructor(private readonly adapter: PaymentAdapterController) {}
   @Post('webhook')
   @ApiOperation({ summary: 'Receber eventos do webhook' })
   @ApiResponse({
     status: 200,
     description: 'Evento do webhook recebido com sucesso',
   })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        data: { type: 'object', properties: { id: { type: 'string' } } },
+      },
+    },
+    examples: {
+      example1: {
+        summary: 'Pagamento 1',
+        value: {
+          data: {
+            id: '12345678',
+          },
+        },
+      },
+      example2: {
+        summary: 'Pagamento 2',
+        value: {
+          data: {
+            id: '987654321',
+          },
+        },
+      },
+    },
+  })
   @ApiInternalServerErrorResponse({ description: 'Erro interno no servidor' })
-  async handleWebhook(@Body() payload: any, @Res() response: Response) {
-    if (!payload.data.id) {
-      return 'Webhook ativo';
-    }
-
-    const payment = await this.adapter.handleWebhook(payload.data.id);
-    if (payment.status === 'approved' || payment.status === 'rejected') {
-      return await this.adapter.updateStatusPayment(payload.data.id, payment.status);
-    }
+  async handleWebhook(@Body() payload: any) {
+    return await this.adapter.handleWebhook(payload.data.id);
   }
 
   @Get()

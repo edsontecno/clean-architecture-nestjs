@@ -1,3 +1,4 @@
+// import { getEnumFromString as getStatusPayment } from './../../payment/gateway/PaymentStatus';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductEntity } from 'src/adapters/product/gateway/Product.entity';
 import { Order } from 'src/application/order/entities/Order';
@@ -13,6 +14,7 @@ import { OrderItemEntity } from './OrderItem.entity';
 import { CreateOrderDto } from '../dto/create-order.dto';
 import { OrderItem } from 'src/application/order/entities/OrderItems';
 import { CustomerEntity } from 'src/adapters/custumer/gateway/Customer.entity';
+import { PaymentStatus } from '../../../adapters/payment/gateway/PaymentStatus';
 
 export class OrderGateway implements IOrderData {
   constructor(
@@ -34,7 +36,6 @@ export class OrderGateway implements IOrderData {
       entity.itemsOrder.push(itemOrder);
     });
     Object.assign(entity, order);
-
     await this.repository.save(entity);
 
     return this.convertDataToEntity(entity);
@@ -148,7 +149,30 @@ export class OrderGateway implements IOrderData {
       });
       order.items = items;
     }
+    order.payment = data.payment;
 
     return order;
+  }
+
+  async updateStatusPayment(
+    payment_id: number,
+    status: string,
+  ): Promise<Order> {
+    const order = await this.repository.findOne({
+      where: { payment: { mp_id: payment_id } },
+      relations: ['payment'],
+    });
+
+    if (order) {
+      order.status = OrderStatus.Canceled;
+      order.payment.status = PaymentStatus.Rejected;
+
+      if (status === 'approved') {
+        order.status = OrderStatus.Received;
+        order.payment.status = PaymentStatus.Approved;
+      }
+      await this.repository.save(order);
+      return this.convertDataToEntity(order);
+    }
   }
 }

@@ -1,3 +1,5 @@
+import { PaymentStatus } from './../../../adapters/payment/gateway/PaymentStatus';
+import { Payment as PaymentEntity } from './../../payment/entities/Payment';
 import { Customer } from './../../customer/entities/Customer';
 import { Injectable } from '@nestjs/common';
 import { Order } from '../entities/Order';
@@ -12,6 +14,7 @@ import { IProductData } from 'src/application/product/interfaces/IProductData';
 import { ICustomerUseCase } from 'src/application/customer/interfaces/ICustomerUseCase';
 import { MercadoPagoConfig, Payment } from 'mercadopago';
 import { decryptObject } from 'src/application/utils/crypto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class OrderUseCase implements IOrderUseCase {
@@ -19,6 +22,7 @@ export class OrderUseCase implements IOrderUseCase {
     private persist: IOrderData,
     private productService: IProductData,
     private customerUseCase: ICustomerUseCase,
+    private configService: ConfigService,
   ) {}
 
   async save(order: Order): Promise<Order> {
@@ -47,11 +51,10 @@ export class OrderUseCase implements IOrderUseCase {
       );
     }
     await this.prepareItems(order, orderProcess);
-    const payment = await this.processPayment(orderProcess);
-    orderProcess.payment_id = payment.payment_id;
+    orderProcess.payment = await this.processPayment(orderProcess);
     const orderSaved = await this.persist.save(orderProcess);
-    orderSaved.payment_id = payment.payment_id;
-    orderSaved.qr_code = payment.qr_code;
+    // orderSaved.payment_id = payment.payment_id;
+    // orderSaved.qr_code = payment.qr_code;
     return orderSaved;
   }
 
@@ -107,24 +110,21 @@ export class OrderUseCase implements IOrderUseCase {
   async processPayment(orderProcess: OrderProcess) {
     console.log('Processando pagamento....');
     const payment = await this.awaitPayment(orderProcess.total);
-    console.log('Pagamento processado');
     return payment;
   }
 
   async awaitPayment(orderAmount: number) {
     const client = new MercadoPagoConfig({
-      accessToken:
-        'TEST-2282551978833497-100320-c82d058610e7b085af78d1551645b98f-676499050',
+      accessToken: this.configService.get<string>('ACCESS_TOKEN_MP'),
     });
     const payment = new Payment(client);
     const body = {
       transaction_amount: orderAmount,
       description: 'Compra no PIX',
       payment_method_id: 'pix',
-      notification_url:
-        'https://3b90-2804-14c-d3-81b1-6836-58e5-e666-92ff.ngrok-free.app/webhook',
+      notification_url: this.configService.get<string>('WEBHOOK_MP'),
       payer: {
-        email: 'gabriel.f.lazari@gmail.com',
+        email: this.configService.get<string>('PAYER_MP'),
       },
     };
     const {
@@ -134,7 +134,14 @@ export class OrderUseCase implements IOrderUseCase {
       id,
     } = await payment.create({ body });
 
-    return { payment_id: id, qr_code: qr_code };
+    const paymentEntity = new PaymentEntity();
+    paymentEntity.amount = orderAmount;
+    paymentEntity.mp_id = id;
+    paymentEntity.qrcode = qr_code;
+    paymentEntity.status = PaymentStatus.Pending;
+    paymentEntity.descritpion = `Pagamento pedido ${id}`;
+
+    return paymentEntity;
   }
 
   private statusPermitidos = {
@@ -185,5 +192,12 @@ export class OrderUseCase implements IOrderUseCase {
     const orders = await this.persist.getOrders(orderInProcess);
     this.addAwaitTimeOnOrders(orders);
     return orders;
+  }
+
+  async updateStatusPayment(
+    payment_id: number,
+    status: string,
+  ): Promise<Order> {
+    return this.persist.updateStatusPayment(payment_id, status);
   }
 }

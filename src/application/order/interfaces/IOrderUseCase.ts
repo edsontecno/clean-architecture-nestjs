@@ -8,4 +8,5 @@ export abstract class IOrderUseCase {
   abstract getListStatus(): string[];
   abstract getById(id: number): Promise<Order>;
   abstract getOrders(): Promise<Order[]>;
+  abstract updateStatusPayment(mp_id: number, status: string): Promise<Order>;
 }

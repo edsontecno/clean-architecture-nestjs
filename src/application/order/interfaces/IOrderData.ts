@@ -12,4 +12,5 @@ export abstract class IOrderData {
   abstract get(id: number): Promise<Order>;
   abstract getOrders(status: OrderStatus[]): Promise<Order[]>;
   abstract convertDtoToEntity(dto: CreateOrderDto): Order;
+  abstract updateStatusPayment(mp_id: number, status: string): Promise<Order>;
 }

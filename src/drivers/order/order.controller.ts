@@ -234,7 +234,7 @@ export class OrderController {
       },
       Status3: {
         summary: 'Pronto',
-        value: 'aproveed',
+        value: 'pronto',
       },
       Status4: {
         summary: 'Finalizado',

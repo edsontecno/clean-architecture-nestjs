@@ -1,5 +1,6 @@
 'use strict';
 
+import { Payment } from 'src/application/payment/entities/Payment';
 import { OrderItem } from './OrderItems';
 import { OrderStatus } from './OrderStatus';
 
@@ -11,6 +12,7 @@ export class Order {
   status: OrderStatus;
   awaitTime: string;
   createdAt: string;
-  payment_id: number;
-  qr_code: string;
+  payment: Payment;
+  // payment_id: number;
+  // qr_code: string;
 }

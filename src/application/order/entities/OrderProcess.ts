@@ -1,3 +1,4 @@
+import { Payment } from './../../payment/entities/Payment';
 import { OrderItem } from './OrderItems';
 import { OrderStatus } from './OrderStatus';
 
@@ -6,8 +7,8 @@ export class OrderProcess {
   customerId: number;
   total: number;
   status: OrderStatus;
-  payment_id: number;
-  qr_code: string;
+  payment: Payment;
+  // qr_code: string;
 
   constructor() {
     this.status = OrderStatus.Pending;
