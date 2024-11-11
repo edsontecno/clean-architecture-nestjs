@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Headers,
   HttpStatus,
   Param,
   Post,
@@ -22,7 +23,6 @@ import {
 import { Response } from 'express';
 import { OrderAdapterController } from 'src/adapters/order/controller/OrderAdapterController';
 import { ResponseOrderDTO } from 'src/adapters/order/dto/response-order.dto';
-import { Order } from 'src/application/order/entities/Order';
 import { ErrorResponseBody } from 'src/system/filtros/filter-exception-global';
 import { CreateOrderDto } from '../../adapters/order/dto/create-order.dto';
 
@@ -53,7 +53,6 @@ export class OrderController {
               amount: 1,
             },
           ],
-          customerId: '78750582364',
         },
       },
       example2: {
@@ -65,15 +64,13 @@ export class OrderController {
               amount: 5,
             },
           ],
-          customerId: '90995528900',
         },
       },
     },
   })
-  async save(@Body() orderDto: CreateOrderDto) {
-    const order = new Order();
-    Object.assign(order, orderDto);
-    return await this.adapter.save(order);
+  async save(@Body() orderDto: CreateOrderDto, @Headers('user') user: any) {
+    orderDto.customer = user;
+    return await this.adapter.save(orderDto);
   }
 
   @Get()

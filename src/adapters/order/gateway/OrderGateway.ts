@@ -125,7 +125,9 @@ export class OrderGateway implements IOrderData {
 
   convertDtoToEntity(dto: CreateOrderDto): Order {
     const order = new Order();
-    Object.assign(order, dto);
+    order.items = [];
+    Object.assign(order.items, dto.items);
+    order.customerId = dto.customer;
     return order;
   }
 

@@ -5,6 +5,5 @@ export class CreateOrderDto {
   @ApiProperty({ type: [OrderItemDto] })
   items: OrderItemDto[];
 
-  @ApiProperty()
-  customerId: string;
+  customer: string;
 }

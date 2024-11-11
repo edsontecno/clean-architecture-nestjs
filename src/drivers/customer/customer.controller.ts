@@ -19,11 +19,11 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { ErrorResponseBody } from 'src/system/filtros/filter-exception-global';
 import { Response } from 'express';
-import { Customer } from 'src/application/customer/entities/Customer';
 import { CustomerAdapterController } from 'src/adapters/custumer/controller/CustumerAdapterController';
 import { CustomerDTO } from 'src/adapters/custumer/dto/CustomerDto';
+import { Customer } from 'src/application/customer/entities/Customer';
+import { ErrorResponseBody } from 'src/system/filtros/filter-exception-global';
 
 @Controller('customer')
 @ApiTags('Cliente')

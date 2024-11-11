@@ -1,3 +1,4 @@
+import { Customer } from './../../customer/entities/Customer';
 import { Injectable } from '@nestjs/common';
 import { Order } from '../entities/Order';
 import { BusinessRuleException } from 'src/system/filtros/business-rule-exception';
@@ -10,6 +11,7 @@ import { OrderItem } from '../entities/OrderItems';
 import { IProductData } from 'src/application/product/interfaces/IProductData';
 import { ICustomerUseCase } from 'src/application/customer/interfaces/ICustomerUseCase';
 import { MercadoPagoConfig, Payment } from 'mercadopago';
+import { decryptObject } from 'src/application/utils/crypto';
 
 @Injectable()
 export class OrderUseCase implements IOrderUseCase {
@@ -23,12 +25,18 @@ export class OrderUseCase implements IOrderUseCase {
     const orderProcess = new OrderProcess();
 
     if (order.customerId) {
-      const customer = await this.customerUseCase.getCustomer(order.customerId);
+      const userDecryto = decryptObject(order.customerId);
+      let customer = await this.customerUseCase.getCustomer(
+        userDecryto.user_name,
+      );
 
       if (customer.id === undefined) {
-        throw new BusinessRuleException(
-          'Cliente informado não existe na base de dados',
-        );
+        const newCustomer = new Customer();
+        newCustomer.email = userDecryto.email;
+        newCustomer.name = userDecryto.given_name;
+        newCustomer.cpf = userDecryto.user_name;
+
+        customer = await this.customerUseCase.saveCustomer(newCustomer);
       }
       orderProcess.customerId = customer.id;
     }

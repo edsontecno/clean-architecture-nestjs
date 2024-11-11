@@ -76,3 +76,8 @@ kubectl apply -f ingress-app.yml
 kubectl port-forward service/backend-app-service 3000:3000
 ```
 ```
+
+ngrok http http://192.168.1.196:3000
+
+user
+context.authorizer.user

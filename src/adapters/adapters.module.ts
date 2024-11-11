@@ -6,6 +6,12 @@ import { CustomerModule } from 'src/drivers/customer/customer.module';
 import { PaymentModule } from 'src/drivers/payment/payment.module';
 
 @Module({
-  imports: [CustomerModule, CategoryModule, ProductModule, OrderModule, PaymentModule],
+  imports: [
+    CustomerModule,
+    CategoryModule,
+    ProductModule,
+    OrderModule,
+    PaymentModule,
+  ],
 })
 export class AdaptersModule {}
