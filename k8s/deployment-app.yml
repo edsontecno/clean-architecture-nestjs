@@ -12,27 +12,9 @@ spec:
       labels:
         app: backend-app  # Associa esse label ao pod criado
     spec:
-      # initContainers:
-      # - name: migration
-      #   image: irlan/clean-architecture-nestjs-backend  # Sua imagem
-      #   command: ["npm", "run", "migration:run"]  # Comando para rodar a migração
-      #   envFrom:
-      #   - configMapRef:
-      #       name: app-config
-      #   env:
-      #   - name: DB_HOST
-      #     value: postgres-db-service # Substitua pelo nome do seu service
-      #   - name: DB_PORT
-      #     value: "5432"
-      #   - name: DB_USERNAME
-      #     value: root
-      #   - name: DB_PASSWORD
-      #     value: root
-      #   - name: DB_NAME
-      #     value: lanchonete    
       containers:
       - name: backend-app
-        image: irlan/clean-architecture-nestjs-backend:1.0.0  # Imagem do Node.js 
+        image: edsontecno/clean-architecture-nestjs-backend:latest  # Imagem do Node.js 
         ports:
         - containerPort: 3000  # Porta exposta pela aplicação
         resources:

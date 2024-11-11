@@ -27,7 +27,28 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/clean-architecture-nestjs-backend:latest
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/clean-architecture-nestjs-backend:latest
+            ${{ secrets.DOCKER_USERNAME }}/clean-architecture-nestjs-backend:${{ github.sha }}
 
       - name: Logout from Docker Hub
         run: docker logout
+  deploy:
+    runs-on: ubuntu-latest 
+    needs: build     
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACADEMY_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_ACADEMY_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_ACADEMY_SESSION_TOKEN }}
+          aws-region: ${{ secrets.AWS_ACADEMY_REGION_DEFAULT }}  
+
+      - name: Update Kubernetes Deployment
+        run: |
+          kubectl set image deployment/backend-app backend-app=${{ secrets.DOCKER_USERNAME }}/clean-architecture-nestjs-backend:${{ github.sha }} --record
