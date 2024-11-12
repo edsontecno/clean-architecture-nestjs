@@ -22,7 +22,6 @@ export class PaymentUseCase {
           'Content-Type': 'application/json',
         },
       });
-      response.data.status = 'approved';
       if (
         response.data.status === 'approved' ||
         response.data.status === 'rejected'
