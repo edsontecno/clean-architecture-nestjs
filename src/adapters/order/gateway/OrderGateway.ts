@@ -15,6 +15,7 @@ import { CreateOrderDto } from '../dto/create-order.dto';
 import { OrderItem } from 'src/application/order/entities/OrderItems';
 import { CustomerEntity } from 'src/adapters/custumer/gateway/Customer.entity';
 import { PaymentStatus } from '../../../adapters/payment/gateway/PaymentStatus';
+import { BusinessRuleException } from 'src/system/filtros/business-rule-exception';
 
 export class OrderGateway implements IOrderData {
   constructor(
@@ -88,7 +89,9 @@ export class OrderGateway implements IOrderData {
       },
       relations: ['itemsOrder', 'customer', 'itemsOrder.product'],
     });
-    console.log(entity);
+    if (entity === null) {
+      throw new BusinessRuleException('Pedido não localizado');
+    }
     const order = this.convertDataToEntity(entity);
     console.log(order);
     return order;

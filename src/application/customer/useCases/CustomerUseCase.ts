@@ -45,8 +45,11 @@ export class CustomerUseCase extends Service implements ICustomerUseCase {
   }
 
   getCustomer(cpf: string): Promise<Customer> {
-    this.validarCpfObrigatorio(cpf);
-    return this.persist.getCustomerByCpf(cpf);
+    if (cpf) {
+      this.validarCpfObrigatorio(cpf);
+      return this.persist.getCustomerByCpf(cpf);
+    }
+    return null;
   }
 
   async deleteCustomer(cpf: string): Promise<void> {

@@ -30,19 +30,22 @@ export class OrderUseCase implements IOrderUseCase {
 
     if (order.customerId) {
       const userDecryto = decryptObject(order.customerId);
+
       let customer = await this.customerUseCase.getCustomer(
         userDecryto.user_name,
       );
 
-      if (customer.id === undefined) {
-        const newCustomer = new Customer();
-        newCustomer.email = userDecryto.email;
-        newCustomer.name = userDecryto.given_name;
-        newCustomer.cpf = userDecryto.user_name;
+      if (customer !== null) {
+        if (customer.id === undefined) {
+          const newCustomer = new Customer();
+          newCustomer.email = userDecryto.email;
+          newCustomer.name = userDecryto.given_name;
+          newCustomer.cpf = userDecryto.user_name;
 
-        customer = await this.customerUseCase.saveCustomer(newCustomer);
+          customer = await this.customerUseCase.saveCustomer(newCustomer);
+        }
+        orderProcess.customerId = customer.id;
       }
-      orderProcess.customerId = customer.id;
     }
 
     if (order.items.length < 1) {
@@ -163,6 +166,11 @@ export class OrderUseCase implements IOrderUseCase {
 
   async changeStatus(id: number, status: OrderStatus): Promise<Order> {
     const order = await this.getById(id);
+
+    if (order === null) {
+      throw new BusinessRuleException('Pedido não localizado');
+    }
+
     if (!this.checkTransactionStatus(order.status, status)) {
       throw new BusinessRuleException('Transição de status inválida');
     }

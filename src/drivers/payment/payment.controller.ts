@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -7,7 +7,6 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { Response } from 'express';
 import { PaymentAdapterController } from 'src/adapters/payment/controller/PaymentAdaptercontroller';
 import { ErrorResponseBody } from 'src/system/filtros/filter-exception-global';
 
@@ -57,10 +56,10 @@ export class PaymentController {
     return await this.adapter.handleWebhook(payload.data.id);
   }
 
-  @Get()
-  @ApiOperation({ summary: 'Endpoint Inicial' })
-  @ApiResponse({ status: 200, description: 'Servidor ativo' })
-  getHealthCheck(@Res() response: Response) {
-    return response.status(HttpStatus.OK).send('Servidor ativo');
-  }
+  // @Get()
+  // @ApiOperation({ summary: 'Endpoint Inicial' })
+  // @ApiResponse({ status: 200, description: 'Servidor ativo' })
+  // getHealthCheck(@Res() response: Response) {
+  //   return response.status(HttpStatus.OK).send('Servidor ativo');
+  // }
 }

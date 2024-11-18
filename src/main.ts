@@ -9,6 +9,14 @@ async function bootstrap() {
     .setTitle('Lanchonete 5 amigos')
     .setDescription('Lanchonete de bairro')
     .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'apiKey',
+        name: 'user',
+        in: 'header',
+      },
+      'user',
+    )
     .addTag('Lanchonete')
     .addServer('http://localhost:3000')
     .addServer(

@@ -8,9 +8,11 @@ import {
   Post,
   Put,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiBody,
   ApiCreatedResponse,
   ApiInternalServerErrorResponse,
@@ -25,6 +27,8 @@ import { OrderAdapterController } from 'src/adapters/order/controller/OrderAdapt
 import { ResponseOrderDTO } from 'src/adapters/order/dto/response-order.dto';
 import { ErrorResponseBody } from 'src/system/filtros/filter-exception-global';
 import { CreateOrderDto } from '../../adapters/order/dto/create-order.dto';
+import { AuthGuard } from 'src/system/guards/authGuard';
+import { Public } from 'src/system/decorator/public';
 
 @ApiTags('Pedidos')
 @ApiBadRequestResponse({
@@ -33,6 +37,8 @@ import { CreateOrderDto } from '../../adapters/order/dto/create-order.dto';
 })
 @ApiInternalServerErrorResponse({ description: 'Erro do servidor' })
 @Controller('orders')
+@ApiBearerAuth('user')
+@UseGuards(AuthGuard)
 export class OrderController {
   constructor(private readonly adapter: OrderAdapterController) {}
 
@@ -68,6 +74,7 @@ export class OrderController {
       },
     },
   })
+  @Public()
   async save(@Body() orderDto: CreateOrderDto, @Headers('user') user: any) {
     orderDto.customer = user;
     return await this.adapter.save(orderDto);

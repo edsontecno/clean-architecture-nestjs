@@ -1,6 +1,7 @@
 import { IOrderUseCase } from 'src/application/order/interfaces/IOrderUseCase';
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
+import { BusinessRuleException } from 'src/system/filtros/business-rule-exception';
 
 @Injectable()
 export class PaymentUseCase {
@@ -34,7 +35,7 @@ export class PaymentUseCase {
 
       return { pagamento: payment_id, status: response.data.status };
     } catch (error) {
-      console.log(error);
+      throw new BusinessRuleException(error.response.data.message);
     }
   }
 }

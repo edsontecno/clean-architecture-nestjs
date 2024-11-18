@@ -8,9 +8,11 @@ import {
   Patch,
   Post,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiBody,
   ApiInternalServerErrorResponse,
   ApiOperation,
@@ -22,6 +24,7 @@ import { Response } from 'express';
 import { ProductAdapterController } from 'src/adapters/product/controller/ProductAdapterController';
 import { Product } from 'src/application/product/entities/Product';
 import { ErrorResponseBody } from 'src/system/filtros/filter-exception-global';
+import { AuthGuard } from 'src/system/guards/authGuard';
 import { CreateProductDto } from '../../adapters/product/dto/create-product.dto';
 
 @Controller('product')
@@ -31,6 +34,8 @@ import { CreateProductDto } from '../../adapters/product/dto/create-product.dto'
   type: ErrorResponseBody,
 })
 @ApiInternalServerErrorResponse({ description: 'Erro do servidor' })
+@UseGuards(AuthGuard)
+@ApiBearerAuth('user')
 export class ProductController {
   constructor(private readonly adapter: ProductAdapterController) {}
 
