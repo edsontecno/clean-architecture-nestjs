@@ -1,0 +1,18 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: backend-app-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: backend-app   # Nome do seu deployment
+  minReplicas: 2        # Número mínimo de réplicas
+  maxReplicas: 10       # Número máximo de réplicas
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu         # Métrica usada para escalabilidade
+      target:
+        type: Utilization
+        averageUtilization: 50  # Escala quando o uso de CPU passar de 50%

@@ -49,6 +49,16 @@ jobs:
           aws-session-token: ${{ secrets.AWS_ACADEMY_SESSION_TOKEN }}
           aws-region: ${{ secrets.AWS_ACADEMY_REGION_DEFAULT }}  
 
+      - name: Update Kube Config
+        run: aws eks update-kubeconfig --name ${{ secrets.CLUSTER_NAME }} --region ${{ secrets.AWS_ACADEMY_REGION_DEFAULT }}
+
+      - name: Deploy EKS
+        run: |
+          kubectl create secret generic db-credentials --from-literal=username=${{ secrets.USER_BD}} --from-literal=password=${{ secrets.PASSWORD_DB}} --from-literal=host=${{ secrets.HOST_DB}}
+          kubectl apply -f k8s/deployment-app.yaml
+          kubectl apply -f k8s/service-app.yaml    
+          kubectl apply -f k8s/hpa.yaml    
+
       - name: Update Kubernetes Deployment
         run: |
           kubectl set image deployment/backend-app backend-app=${{ secrets.DOCKER_USERNAME }}/clean-architecture-nestjs-backend:${{ github.sha }} --record

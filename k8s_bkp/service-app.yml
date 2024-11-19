@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-app-service
+spec:
+  selector:
+    app: backend-app  # Conecta-se ao pod do backend
+  ports:
+    - protocol: TCP
+      port: 3000  # Porta que será exposta externamente
+      targetPort: 3000  # Porta do container
+  type: LoadBalancer  # Expor a aplicação externamente através de um LoadBalancer

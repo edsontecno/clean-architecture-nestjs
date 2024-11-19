@@ -64,7 +64,7 @@ minikube stop
 minikube delete
 minikube start
 
-kubectl create secret generic db-credentials --from-literal=username=root --from-literal=password=root &&
+kubectl create secret generic db-credentials --from-literal=username=root --from-literal=password=root --from-literal=host=www &&
 kubectl apply -f pvc-database.yml &&
 kubectl apply -f deployment-database.yml &&
 kubectl apply -f service-database.yml &&
