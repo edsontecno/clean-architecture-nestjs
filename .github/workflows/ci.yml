@@ -55,9 +55,9 @@ jobs:
       - name: Deploy EKS
         run: |
           kubectl create secret generic db-credentials --from-literal=username=${{ secrets.USER_BD}} --from-literal=password=${{ secrets.PASSWORD_DB}} --from-literal=host=${{ secrets.HOST_DB}}
-          kubectl apply -f k8s/deployment-app.yaml
-          kubectl apply -f k8s/service-app.yaml    
-          kubectl apply -f k8s/hpa.yaml    
+          kubectl apply -f ./k8s/deployment-app.yaml
+          kubectl apply -f ./k8s/service-app.yaml    
+          kubectl apply -f ./k8s/hpa.yaml    
 
       - name: Update Kubernetes Deployment
         run: |
