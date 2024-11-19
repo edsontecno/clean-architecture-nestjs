@@ -49,9 +49,6 @@ jobs:
           aws-session-token: ${{ secrets.AWS_ACADEMY_SESSION_TOKEN }}
           aws-region: ${{ secrets.AWS_ACADEMY_REGION_DEFAULT }}  
       
-      - name: List repository files
-        run: ls -R .
-
       - name: Update Kube Config
         run: aws eks update-kubeconfig --name ${{ secrets.CLUSTER_NAME }} --region ${{ secrets.AWS_ACADEMY_REGION_DEFAULT }}
 
@@ -59,9 +56,9 @@ jobs:
         run: |
           kubectl delete secret db-credentials --ignore-not-found
           kubectl create secret generic db-credentials --from-literal=username=${{ secrets.USER_BD}} --from-literal=password=${{ secrets.PASSWORD_DB}} --from-literal=host=${{ secrets.HOST_DB}}
-          kubectl apply -f ./k8s/deployment-app.yaml
-          kubectl apply -f ./k8s/service-app.yaml    
-          kubectl apply -f ./k8s/hpa.yaml    
+          kubectl apply -f ./k8s/deployment-app.yml
+          kubectl apply -f ./k8s/service-app.yml    
+          kubectl apply -f ./k8s/hpa.yml    
 
       - name: Update Kubernetes Deployment
         run: |
