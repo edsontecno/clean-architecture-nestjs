@@ -20,7 +20,7 @@ async function bootstrap() {
     .addTag('Lanchonete')
     .addServer('http://localhost:3000')
     .addServer(
-      'https://dc7f-2804-46ec-87b-ab00-60a9-5d77-d7ca-868d.ngrok-free.app',
+      'https://b03e-2804-46ec-80d-b900-9a0e-646a-cf41-19e3.ngrok-free.app',
     )
     .addServer('https://0oc9cpj3o6.execute-api.us-east-1.amazonaws.com/dev')
     .build();

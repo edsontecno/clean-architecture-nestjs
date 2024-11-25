@@ -76,8 +76,11 @@ export class OrderController {
   })
   @Public()
   async save(@Body() orderDto: CreateOrderDto, @Headers('user') user: any) {
+    console.log(orderDto, '----');
     orderDto.customer = user;
-    return await this.adapter.save(orderDto);
+    const pedido = await this.adapter.save(orderDto);
+    console.log(pedido);
+    return pedido;
   }
 
   @Get()

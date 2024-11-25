@@ -81,3 +81,8 @@ ngrok http http://192.168.1.196:3000
 
 user
 context.authorizer.user
+
+aws cognito-idp initiate-auth \
+  --auth-flow USER_PASSWORD_AUTH \
+  --client-id a81se13n441ou2q1hsug92qc8 \
+  --auth-parameters USERNAME=34182012020,PASSWORD=12345678!

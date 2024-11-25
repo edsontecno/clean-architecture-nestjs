@@ -34,12 +34,12 @@ export class OrderUseCase implements IOrderUseCase {
       let customer = await this.customerUseCase.getCustomer(
         userDecryto.user_name,
       );
-
+      console.log(userDecryto);
       if (customer !== null) {
         if (customer.id === undefined) {
           const newCustomer = new Customer();
           newCustomer.email = userDecryto.email;
-          newCustomer.name = userDecryto.given_name;
+          newCustomer.name = userDecryto.given_name ?? userDecryto.user_name;
           newCustomer.cpf = userDecryto.user_name;
 
           customer = await this.customerUseCase.saveCustomer(newCustomer);
@@ -47,7 +47,6 @@ export class OrderUseCase implements IOrderUseCase {
         orderProcess.customerId = customer.id;
       }
     }
-
     if (order.items.length < 1) {
       throw new BusinessRuleException(
         'Nenhum produto foi adicionado ao pedido',
