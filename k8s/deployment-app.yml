@@ -50,3 +50,9 @@ spec:
           value: admin@root.com
         - name: NODE_ENV
           value: production
+        - name: WEBHOOK_MP
+          value: https://b12e46nbsl.execute-api.us-east-1.amazonaws.com/dev/public/payment
+        - name: PAYER_MP
+          value: gabriel.f.lazari@gmail.com    
+        - name: ACCESS_TOKEN_MP
+          value: TEST-2282551978833497-100320-c82d058610e7b085af78d1551645b98f-676499050  
