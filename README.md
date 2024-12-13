@@ -4,7 +4,7 @@
 - Edson Pereira de Andrade
 - Evelly Cristina Cramolish Palombo Santos 
 - Gabriel Fernandes Lazari 
-- Marcelo Rodrigues
+- Marcelo Rodrigues 
 
 ## Tecnologias
 Essa api foi desenvolvivida usando as seguintes tecnologias:
