@@ -84,7 +84,7 @@ context.authorizer.user
 
 aws cognito-idp initiate-auth \
   --auth-flow USER_PASSWORD_AUTH \
-  --client-id 4g29k1bvh7cuu1lvm5v4qau4qg \
+  --client-id 2m73l4jt9p2c8tuiom60k8q39l \
   --auth-parameters USERNAME=34182012020,PASSWORD=12345678!
 
   aws eks update-kubeconfig --region us-east-1 --name cluster-fiap
