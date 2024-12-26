@@ -1,8 +1,8 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { Category } from 'src/application/category/entites/Category';
-import { ICategoryData } from 'src/application/category/interfaces/ICategoryData';
-import { Product } from 'src/application/product/entities/Product';
-import { BusinessRuleException } from 'src/system/filtros/business-rule-exception';
+import { Category } from '../../../application/category/entites/Category';
+import { ICategoryData } from '../../../application/category/interfaces/ICategoryData';
+import { Product } from '../../../application/product/entities/Product';
+import { BusinessRuleException } from '../../../system/filtros/business-rule-exception';
 import { Repository } from 'typeorm';
 import { CreateCategoryDto } from '../dto/create-category.dto';
 import { CategoryEntity } from './Category.entity';

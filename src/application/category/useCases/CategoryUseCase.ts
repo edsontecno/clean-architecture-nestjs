@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { ICategoryUseCase } from '../interfaces/ICategoryUseCase';
 import { Category } from '../entites/Category';
 import { ICategoryData } from '../interfaces/ICategoryData';
-import { Service } from 'src/application/service/service';
-import { BusinessRuleException } from 'src/system/filtros/business-rule-exception';
+import { Service } from '../../../application/service/service';
+import { BusinessRuleException } from '../../../system/filtros/business-rule-exception';
 
 @Injectable()
 export class CategoryUseCase extends Service implements ICategoryUseCase {

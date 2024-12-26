@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCategoryDto } from 'src/adapters/category/dto/create-category.dto';
-import { ICategoryData } from 'src/application/category/interfaces/ICategoryData';
-import { ICategoryUseCase } from 'src/application/category/interfaces/ICategoryUseCase';
+import { CreateCategoryDto } from '../../../adapters/category/dto/create-category.dto';
+import { ICategoryData } from '../../../application/category/interfaces/ICategoryData';
+import { ICategoryUseCase } from '../../../application/category/interfaces/ICategoryUseCase';
 import { CategoryDto } from '../dto/category.dto';
 import { GategoryPresenter } from '../presenter/CategoryPresenter';
 

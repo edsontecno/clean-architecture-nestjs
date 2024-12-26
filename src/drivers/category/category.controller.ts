@@ -22,11 +22,11 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Response } from 'express';
-import { CategoryAdapterController } from 'src/adapters/category/controller/CategoryAdapterController';
-import { ErrorResponseBody } from 'src/system/filtros/filter-exception-global';
+import { CategoryAdapterController } from '../../adapters/category/controller/CategoryAdapterController';
+import { ErrorResponseBody } from '../../system/filtros/filter-exception-global';
 import { CategoryDto } from '../../adapters/category/dto/category.dto';
 import { CreateCategoryDto } from '../../adapters/category/dto/create-category.dto';
-import { AuthGuard } from 'src/system/guards/authGuard';
+import { AuthGuard } from '../../system/guards/authGuard';
 
 @ApiTags('Categoria')
 @ApiBadRequestResponse({

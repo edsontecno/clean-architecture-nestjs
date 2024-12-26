@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
-import { decryptObject } from 'src/application/utils/crypto';
+import { decryptObject } from '../../application/utils/crypto';
 import { IS_PUBLIC_KEY } from '../decorator/public';
 
 @Injectable()

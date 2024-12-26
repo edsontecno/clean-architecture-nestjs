@@ -4,8 +4,8 @@ import { CategoryOutput } from '../../adapters/category/gateway';
 import { CategoryInput } from '.';
 import { CategoryEntity } from '../../adapters/category/gateway/Category.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CategoryAdapterController } from 'src/adapters/category/controller/CategoryAdapterController';
-import { GategoryPresenter } from 'src/adapters/category/presenter/CategoryPresenter';
+import { CategoryAdapterController } from '../../adapters/category/controller/CategoryAdapterController';
+import { GategoryPresenter } from '../../adapters/category/presenter/CategoryPresenter';
 
 @Module({
   imports: [TypeOrmModule.forFeature([CategoryEntity])],

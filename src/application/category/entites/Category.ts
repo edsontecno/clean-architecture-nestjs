@@ -1,4 +1,4 @@
-import { Product } from 'src/application/product/entities/Product';
+import { Product } from '../../../application/product/entities/Product';
 
 export class Category {
   id: number;

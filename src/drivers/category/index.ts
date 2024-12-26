@@ -1,6 +1,6 @@
 import { Provider } from '@nestjs/common';
-import { CategoryUseCase } from 'src/application/category/useCases/CategoryUseCase';
-import { ICategoryUseCase } from 'src/application/category/interfaces/ICategoryUseCase';
+import { CategoryUseCase } from '../../application/category/useCases/CategoryUseCase';
+import { ICategoryUseCase } from '../../application/category/interfaces/ICategoryUseCase';
 
 export const CategoryInput: Provider[] = [
   {
