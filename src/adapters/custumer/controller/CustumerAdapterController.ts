@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { CustomerDTO } from '../dto/CustomerDto';
 import { CustomerPresenter } from '../presenter/CustomerPresenter';
-import { ICustomerUseCase } from 'src/application/customer/interfaces/ICustomerUseCase';
-import { ICustomerData } from 'src/application/customer/interfaces/ICustomerData';
+import { ICustomerUseCase } from '../../../application/customer/interfaces/ICustomerUseCase';
+import { ICustomerData } from '../../../application/customer/interfaces/ICustomerData';
 
 @Injectable()
 export class CustomerAdapterController {
