@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { IProductUseCase } from '../interfaces/IProductUseCase';
 import { Product } from '../entities/Product';
 import { IProductData } from '../interfaces/IProductData';
-import { BusinessRuleException } from 'src/system/filtros/business-rule-exception';
-import { Service } from 'src/application/service/service';
-import { ICategoryUseCase } from 'src/application/category/interfaces/ICategoryUseCase';
+import { BusinessRuleException } from '../../../system/filtros/business-rule-exception';
+import { Service } from '../../../application/service/service';
+import { ICategoryUseCase } from '../../../application/category/interfaces/ICategoryUseCase';
 
 @Injectable()
 export class ProductUseCase extends Service implements IProductUseCase {

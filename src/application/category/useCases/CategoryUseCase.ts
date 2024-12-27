@@ -27,7 +27,7 @@ export class CategoryUseCase extends Service implements ICategoryUseCase {
     //   throw new Error('Categoria não localizada');
     // }
     this.checkField(
-      category.id,
+      category?.id,
       'Não foi possível encontrar a categoria informada',
     );
     return category;
@@ -38,7 +38,7 @@ export class CategoryUseCase extends Service implements ICategoryUseCase {
     //   throw new BusinessRuleException('Categoria não localizada');
     // }
     this.checkField(
-      category.id,
+      category?.id,
       'Não foi possível encontrar a categoria informada',
     );
     return category;

@@ -23,12 +23,12 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Response } from 'express';
-import { OrderAdapterController } from 'src/adapters/order/controller/OrderAdapterController';
-import { ResponseOrderDTO } from 'src/adapters/order/dto/response-order.dto';
-import { ErrorResponseBody } from 'src/system/filtros/filter-exception-global';
+import { OrderAdapterController } from '../../adapters/order/controller/OrderAdapterController';
+import { ResponseOrderDTO } from '../../adapters/order/dto/response-order.dto';
+import { ErrorResponseBody } from '../../system/filtros/filter-exception-global';
 import { CreateOrderDto } from '../../adapters/order/dto/create-order.dto';
-import { AuthGuard } from 'src/system/guards/authGuard';
-import { Public } from 'src/system/decorator/public';
+import { AuthGuard } from '../../system/guards/authGuard';
+import { Public } from '../../system/decorator/public';
 
 @ApiTags('Pedidos')
 @ApiBadRequestResponse({
@@ -76,7 +76,6 @@ export class OrderController {
   })
   @Public()
   async save(@Body() orderDto: CreateOrderDto, @Headers('user') user: any) {
-    console.log(orderDto, '----');
     orderDto.customer = user;
     const pedido = await this.adapter.save(orderDto);
     console.log(pedido);

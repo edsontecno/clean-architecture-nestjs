@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { CreateOrderDto } from 'src/adapters/order/dto/create-order.dto';
-import { IOrderData } from 'src/application/order/interfaces/IOrderData';
-import { IOrderUseCase } from 'src/application/order/interfaces/IOrderUseCase';
+import { CreateOrderDto } from '../../../adapters/order/dto/create-order.dto';
+import { IOrderData } from '../../../application/order/interfaces/IOrderData';
+import { IOrderUseCase } from '../../../application/order/interfaces/IOrderUseCase';
 import { OrderPresenter } from '../presenter/OrderPresenter';
 import { ResponseOrderDTO } from '../dto/response-order.dto';
 

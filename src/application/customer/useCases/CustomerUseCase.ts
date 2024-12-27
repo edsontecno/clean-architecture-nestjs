@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { BusinessRuleException } from 'src/system/filtros/business-rule-exception';
+import { BusinessRuleException } from '../../../system/filtros/business-rule-exception';
 import { cpf } from 'cpf-cnpj-validator';
-import { Service } from 'src/application/service/service';
-import { emailIsValid } from 'src/application/utils/utils';
+import { Service } from '../../../application/service/service';
+import { emailIsValid } from '../../../application/utils/utils';
 import { ICustomerUseCase } from '../interfaces/ICustomerUseCase';
 import { ICustomerData } from '../interfaces/ICustomerData';
 import { Customer } from '../entities/Customer';

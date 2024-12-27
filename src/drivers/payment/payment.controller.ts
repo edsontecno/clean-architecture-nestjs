@@ -7,8 +7,8 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { PaymentAdapterController } from 'src/adapters/payment/controller/PaymentAdaptercontroller';
-import { ErrorResponseBody } from 'src/system/filtros/filter-exception-global';
+import { PaymentAdapterController } from '../../adapters/payment/controller/PaymentAdaptercontroller';
+import { ErrorResponseBody } from '../../system/filtros/filter-exception-global';
 
 @Controller()
 @ApiTags('Pagamento')

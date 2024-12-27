@@ -4,6 +4,5 @@ import { OrderItemDto } from './order-item.dto';
 export class CreateOrderDto {
   @ApiProperty({ type: [OrderItemDto] })
   items: OrderItemDto[];
-
-  customer: string;
+  customer?: string;
 }

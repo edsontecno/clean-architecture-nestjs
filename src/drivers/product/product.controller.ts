@@ -21,10 +21,10 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Response } from 'express';
-import { ProductAdapterController } from 'src/adapters/product/controller/ProductAdapterController';
-import { Product } from 'src/application/product/entities/Product';
-import { ErrorResponseBody } from 'src/system/filtros/filter-exception-global';
-import { AuthGuard } from 'src/system/guards/authGuard';
+import { ProductAdapterController } from '../../adapters/product/controller/ProductAdapterController';
+import { Product } from '../../application/product/entities/Product';
+import { ErrorResponseBody } from '../../system/filtros/filter-exception-global';
+import { AuthGuard } from '../../system/guards/authGuard';
 import { CreateProductDto } from '../../adapters/product/dto/create-product.dto';
 
 @Controller('product')

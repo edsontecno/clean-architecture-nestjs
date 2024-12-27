@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PaymentUseCase } from 'src/application/payment/useCases/PaymentUseCase';
+import { PaymentUseCase } from '../../../application/payment/useCases/PaymentUseCase';
 
 @Injectable()
 export class PaymentAdapterController {

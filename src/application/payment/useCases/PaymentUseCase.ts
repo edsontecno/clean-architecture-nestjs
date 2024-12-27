@@ -1,7 +1,7 @@
-import { IOrderUseCase } from 'src/application/order/interfaces/IOrderUseCase';
+import { IOrderUseCase } from '../../../application/order/interfaces/IOrderUseCase';
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
-import { BusinessRuleException } from 'src/system/filtros/business-rule-exception';
+import { BusinessRuleException } from '../../../system/filtros/business-rule-exception';
 
 @Injectable()
 export class PaymentUseCase {

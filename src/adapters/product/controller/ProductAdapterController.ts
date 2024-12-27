@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { IProductData } from 'src/application/product/interfaces/IProductData';
-import { IProductUseCase } from 'src/application/product/interfaces/IProductUseCase';
+import { IProductData } from '../../../application/product/interfaces/IProductData';
+import { IProductUseCase } from '../../../application/product/interfaces/IProductUseCase';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { ProdutctPresenter } from '../presenter/ProductPresenter';
 
