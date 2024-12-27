@@ -78,6 +78,13 @@
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
-    "coverageDirectory": "../coverage"
+    "coverageDirectory": "../coverage",
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "<rootDir>/src/system/db/migrations/"
+    ],
+    "modulePathIgnorePatterns": [
+      "<rootDir>/src/system/db/migrations/"
+    ]
   }
 }
